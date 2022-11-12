@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSS Nugget: image clipping effect</title>
+    <style>
+      /* -------------------------------- 
+
+💡 How to create an image clipping effect in CSS
+🔗 https://codyhouse.co/nuggets/image-clipping-effect
+
+-------------------------------- */
+
+      .wrapper {
+        width: 400px;
+      }
+
+      .figure,
+      .img {
+        will-change: transform;
+        transition: transform 0.3s;
+      }
+
+      .figure {
+        overflow: hidden;
+      }
+
+      .img {
+        width: 100%;
+      }
+
+      .wrapper:hover .figure {
+        transform: scale(0.9);
+      }
+
+      .wrapper:hover .img {
+        transform: scale(1.111);
+      }
+
+      /* demo stuff */
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <figure class="figure">
+        <img
+          class="img"
+          src="https://images.unsplash.com/photo-1667827002414-ebb2394a8674?crop=entropy&cs=tinysrgb&fm=jpg&ixid=MnwzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2Njc5OTQ1Nzc&ixlib=rb-4.0.3&q=80"
+          alt="Car in desert"
+        />
+      </figure>
+    </div>
+  </body>
+</html>
