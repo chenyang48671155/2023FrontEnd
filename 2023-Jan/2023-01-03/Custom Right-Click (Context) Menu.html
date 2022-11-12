@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Custom Right-Click (Context) Menu</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
+
+      * {
+        box-sizing: border-box;
+        font-family: "Inter", sans-serif;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+      }
+
+      .video-bg {
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+
+        video {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
+
+      .target {
+        width: 50%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        z-index: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: rgba(#fff, 0.5);
+        font-size: 2vw;
+      }
+
+      .target-light {
+        left: 0;
+      }
+
+      .target-dark {
+        right: 0;
+      }
+
+      body {
+        width: 100%;
+        height: 100%;
+        background-color: #000;
+        overflow: hidden;
+      }
+
+      .right-click {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+        pointer-events: none;
+        padding: 2vw;
+        border-radius: 1vw;
+        font-size: 2.4vw;
+        background-color: #fff;
+      }
+
+      /* Context Menu */
+
+      .contextMenu {
+        --menu-border: rgba(255, 255, 255, 0.08);
+        --menu-bg: linear-gradient(
+          45deg,
+          rgba(10, 20, 28, 0.2) 0%,
+          rgba(10, 20, 28, 0.7) 100%
+        );
+        --item-border: rgba(255, 255, 255, 0.1);
+        --item-color: #fff;
+        --item-bg-hover: rgba(255, 255, 255, 0.1);
+
+        height: 0;
+        overflow: hidden;
+        background: var(--menu-bg);
+        backdrop-filter: blur(5px);
+        position: fixed;
+        top: var(--top);
+        left: var(--left);
+        animation: menuAnimation 0.4s 0s both;
+        transform-origin: left;
+        list-style: none;
+        margin: 4px;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        z-index: 999999999;
+        box-shadow: 0 0 0 1px var(--menu-border), 0 2px 2px rgb(0 0 0 / 3%),
+          0 4px 4px rgb(0 0 0 / 4%), 0 10px 8px rgb(0 0 0 / 5%),
+          0 15px 15px rgb(0 0 0 / 6%), 0 30px 30px rgb(0 0 0 / 7%),
+          0 70px 65px rgb(0 0 0 / 9%);
+
+        &-item {
+          padding: 4px;
+        }
+
+        &-item[data-divider="top"] {
+          border-top: 1px solid;
+        }
+
+        &-item[data-divider="bottom"] {
+          border-bottom: 1px solid;
+        }
+
+        &-item[data-divider="top-bottom"] {
+          border-top: 1px solid;
+          border-bottom: 1px solid;
+        }
+
+        &-item[data-divider] {
+          border-color: var(--item-border);
+        }
+
+        &-button {
+          color: var(--item-color);
+          background: 0;
+          border: 0;
+          white-space: nowrap;
+          width: 100%;
+          border-radius: 4px;
+          padding: 6px 24px 6px 7px;
+          text-align: left;
+          display: flex;
+          align-items: center;
+          font-size: 14px;
+          width: 100%;
+          animation: menuItemAnimation 0.2s 0s both;
+          font-family: "Inter", sans-serif;
+          cursor: pointer;
+
+          &:hover {
+            background-color: var(--item-bg-hover);
+          }
+        }
+
+        &[data-theme="light"] {
+          --menu-bg: linear-gradient(
+            45deg,
+            rgba(255, 255, 255, 0.45) 0%,
+            rgba(255, 255, 255, 0.85) 100%
+          );
+          --menu-border: rgba(0, 0, 0, 0.08);
+          --item-border: rgba(0, 0, 0, 0.1);
+          --item-color: rgb(10, 20, 28);
+          --item-bg-hover: rgba(10, 20, 28, 0.09);
+        }
+      }
+
+      @keyframes menuAnimation {
+        0% {
+          opacity: 0;
+          transform: scale(0.5);
+        }
+
+        100% {
+          height: var(--height);
+          opacity: 1;
+          border-radius: 8px;
+          transform: scale(1);
+        }
+      }
+
+      @keyframes menuItemAnimation {
+        0% {
+          opacity: 0;
+          transform: translateX(-10px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="video-bg">
+      <video width="100%" height="100%" muted autoplay loop>
+        <source
+          src="https://assets.codepen.io/344846/cm.mp4"
+          type="video/mp4"
+        />
+      </video>
+    </div>
+    <div class="right-click">Right-click anywhere</div>
+    <div class="target-light target">Light Menu</div>
+    <div class="target-dark target">Dark Menu</div>
+
+    <script type="module">
+      class ContextMenu {
+        constructor({ target = null, menuItems = [], mode = "dark" }) {
+          this.target = target;
+          this.menuItems = menuItems;
+          this.mode = mode;
+          this.targetNode = this.getTargetNode();
+          this.menuItemsNode = this.getMenuItemsNode();
+          this.isOpened = false;
+        }
+
+        getTargetNode() {
+          const nodes = document.querySelectorAll(this.target);
+
+          if (nodes && nodes.length !== 0) {
+            return nodes;
+          } else {
+            console.error(`getTargetNode :: "${this.target}" target not found`);
+            return [];
+          }
+        }
+
+        getMenuItemsNode() {
+          const nodes = [];
+
+          if (!this.menuItems) {
+            console.error("getMenuItemsNode :: Please enter menu items");
+            return [];
+          }
+
+          this.menuItems.forEach((data, index) => {
+            const item = this.createItemMarkup(data);
+            item.firstChild.setAttribute(
+              "style",
+              `animation-delay: ${index * 0.08}s`
+            );
+            nodes.push(item);
+          });
+
+          return nodes;
+        }
+
+        createItemMarkup(data) {
+          const button = document.createElement("BUTTON");
+          const item = document.createElement("LI");
+
+          button.innerHTML = data.content;
+          button.classList.add("contextMenu-button");
+          item.classList.add("contextMenu-item");
+
+          if (data.divider) item.setAttribute("data-divider", data.divider);
+          item.appendChild(button);
+
+          if (data.events && data.events.length !== 0) {
+            Object.entries(data.events).forEach((event) => {
+              const [key, value] = event;
+              button.addEventListener(key, value);
+            });
+          }
+
+          return item;
+        }
+
+        renderMenu() {
+          const menuContainer = document.createElement("UL");
+
+          menuContainer.classList.add("contextMenu");
+          menuContainer.setAttribute("data-theme", this.mode);
+
+          this.menuItemsNode.forEach((item) => menuContainer.appendChild(item));
+
+          return menuContainer;
+        }
+
+        closeMenu(menu) {
+          if (this.isOpened) {
+            this.isOpened = false;
+            menu.remove();
+          }
+        }
+
+        init() {
+          const contextMenu = this.renderMenu();
+          document.addEventListener("click", () => this.closeMenu(contextMenu));
+          window.addEventListener("blur", () => this.closeMenu(contextMenu));
+          document.addEventListener("contextmenu", (e) => {
+            this.targetNode.forEach((target) => {
+              if (!e.target.contains(target)) {
+                contextMenu.remove();
+              }
+            });
+          });
+
+          this.targetNode.forEach((target) => {
+            target.addEventListener("contextmenu", (e) => {
+              e.preventDefault();
+              this.isOpened = true;
+
+              const { clientX, clientY } = e;
+              document.body.appendChild(contextMenu);
+
+              const positionY =
+                clientY + contextMenu.scrollHeight >= window.innerHeight
+                  ? window.innerHeight - contextMenu.scrollHeight - 20
+                  : clientY;
+              const positionX =
+                clientX + contextMenu.scrollWidth >= window.innerWidth
+                  ? window.innerWidth - contextMenu.scrollWidth - 20
+                  : clientX;
+
+              contextMenu.setAttribute(
+                "style",
+                `--width: ${contextMenu.scrollWidth}px;
+          --height: ${contextMenu.scrollHeight}px;
+          --top: ${positionY}px;
+          --left: ${positionX}px;`
+              );
+            });
+          });
+        }
+      }
+
+      const copyIcon = `<svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2.5" style="margin-right: 7px" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>`;
+
+      const cutIcon = `<svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2.5" style="margin-right: 7px" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><circle cx="6" cy="6" r="3"></circle><circle cx="6" cy="18" r="3"></circle><line x1="20" y1="4" x2="8.12" y2="15.88"></line><line x1="14.47" y1="14.48" x2="20" y2="20"></line><line x1="8.12" y1="8.12" x2="12" y2="12"></line></svg>`;
+
+      const pasteIcon = `<svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2.5" style="margin-right: 7px; position: relative; top: -1px" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path><rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect></svg>`;
+
+      const downloadIcon = `<svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2.5" style="margin-right: 7px; position: relative; top: -1px" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>`;
+
+      const deleteIcon = `<svg viewBox="0 0 24 24" width="13" height="13" stroke="currentColor" stroke-width="2.5" fill="none" style="margin-right: 7px" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>`;
+
+      const menuItems = [
+        {
+          content: `${copyIcon}Copy`,
+          events: {
+            click: (e) => console.log(e, "Copy Button Click"),
+            // mouseover: () => console.log("Copy Button Mouseover")
+            // You can use any event listener from here
+          },
+        },
+        { content: `${pasteIcon}Paste` },
+        { content: `${cutIcon}Cut` },
+        { content: `${downloadIcon}Download` },
+        {
+          content: `${deleteIcon}Delete`,
+          divider: "top", // top, bottom, top-bottom
+        },
+      ];
+
+      const light = new ContextMenu({
+        target: ".target-light",
+        mode: "light", // default: "dark"
+        menuItems,
+      });
+
+      light.init();
+
+      const dark = new ContextMenu({
+        target: ".target-dark",
+        menuItems,
+      });
+
+      dark.init();
+
+      // remove message
+
+      function removeMessage() {
+        const message = document.querySelector(".right-click");
+        if (message) message.remove();
+      }
+
+      window.addEventListener("click", removeMessage);
+      window.addEventListener("contextmenu", removeMessage);
+    </script>
+  </body>
+</html>
