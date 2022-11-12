@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Oeuvre de Marine</title>
+    <style>
+      html,
+      body {
+        margin: 0;
+      }
+
+      #page {
+        width: 100%;
+        height: 100vh;
+        background-image: radial-gradient(
+          at 110% 90%,
+          #1ad2fb,
+          #3bb1e6,
+          #3e93b8,
+          #537ea1,
+          #596a91,
+          #5f6484,
+          #645b7a,
+          #644b69,
+          #5d4066,
+          #59365c,
+          #563659,
+          #61395b,
+          #704360,
+          #905267,
+          #a36277,
+          #ba7087,
+          #e58dab,
+          #f0a5bf,
+          #d4a7c4
+        );
+        filter: brightness(130%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .wrap {
+        width: 50%;
+        height: 85%;
+        display: grid;
+        grid-template-columns: 25% 25% 25% 25% 25%;
+        grid-template-rows: 55% 45%;
+        gap: 0px 0px;
+      }
+
+      #bloc1 {
+        background: white;
+        border-left: 4px solid black;
+        grid-column: 1 / 3;
+        grid-row: 1;
+      }
+
+      #bloc2 {
+        background: black;
+        border-style: solid;
+        border-width: 300px 0px 0px 120px;
+        border-color: transparent transparent transparent white;
+        grid-column: 3 / 5;
+        grid-row: 1;
+      }
+
+      #bloc3 {
+        background: black;
+        grid-column: 1 / 2;
+        grid-row: 2;
+      }
+
+      #bloc4 {
+        background: white;
+        grid-column: 2 / 5;
+        grid-row: 2;
+      }
+
+      #window {
+        position: absolute;
+        background: black;
+        width: 34.5%;
+        height: 75%;
+        top: 50%;
+        left: 55%;
+        transform: translate(-50%, -50%);
+      }
+
+      #frame1 {
+        width: 60%;
+        height: 55%;
+        background: white;
+        margin-left: 40%;
+        border-top-right-radius: 100px 100px;
+      }
+
+      #frame2 {
+        width: 30%;
+        height: 45%;
+        background: white;
+        margin-left: 40%;
+      }
+
+      #big-triangle {
+        position: absolute;
+        background: transparent;
+        width: 45%;
+        height: 75%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        box-sizing: border-box;
+        border-style: solid;
+        border-width: 0px 250px 500px 250px;
+        border-color: transparent transparent black transparent;
+      }
+
+      #inner-triangle {
+        position: absolute;
+        background: transparent;
+        width: 30%;
+        height: 70%;
+        top: 50.5%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        box-sizing: border-box;
+        border-style: solid;
+        border-width: 0px 246px 488px 246px;
+        border-color: transparent transparent white transparent;
+      }
+
+      #outer-ball {
+        background: white;
+        position: absolute;
+        width: 225px;
+        height: 225px;
+        border-radius: 100%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border: 3.5px solid black;
+        box-sizing: border-box;
+      }
+
+      .ball {
+        position: absolute;
+        border-radius: 100%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        box-sizing: border-box;
+      }
+
+      #ball1 {
+        background-image: linear-gradient(
+          to top,
+          #22d8fd,
+          #3aacdf,
+          #4e81b7,
+          #525888,
+          #473458
+        );
+        width: 220px;
+        height: 220px;
+        border: 3.5px solid black;
+      }
+
+      #ball2 {
+        background: white;
+        width: 200px;
+        height: 200px;
+        border: 3.5px solid black;
+      }
+
+      #ball3 {
+        background: white;
+        width: 190px;
+        height: 200px;
+        border: 2.5px solid black;
+        z-index: 2;
+      }
+
+      #ball4 {
+        background: white;
+        width: 175px;
+        height: 200px;
+        border: 2.5px solid black;
+        z-index: 3;
+      }
+
+      #ball5 {
+        background: white;
+        width: 155px;
+        height: 200px;
+        border: 2.5px solid black;
+        z-index: 4;
+      }
+
+      #ball6 {
+        background: white;
+        width: 125px;
+        height: 200px;
+        border: 2.5px solid black;
+        z-index: 5;
+      }
+
+      #ball7 {
+        background: white;
+        width: 80px;
+        height: 200px;
+        border: 2.5px solid black;
+        z-index: 6;
+      }
+
+      #ball8 {
+        background: white;
+        width: 35px;
+        height: 200px;
+        border: 2.5px solid black;
+        z-index: 7;
+      }
+
+      #outer-cube {
+        position: absolute;
+        width: 100px;
+        height: 200px;
+        top: 60%;
+        left: 52%;
+        background-image: url("https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/6647c914258739.5628075eadb2e.jpg");
+      }
+
+      #cadre1 {
+        background: transparent;
+        position: absolute;
+        width: 40px;
+        height: 300px;
+        top: 15%;
+        right: 13%;
+        border: 3.5px solid black;
+        border-right: 0;
+        border-top: 0;
+      }
+
+      #cadre2 {
+        background: transparent;
+        position: absolute;
+        width: 30px;
+        height: 300px;
+        top: 25%;
+        right: 11%;
+        border: 2px solid black;
+        border-right: 0;
+        border-top: 0;
+        border-radius: 0 0 15px 15px;
+      }
+
+      #bulle {
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        background: rgb(217, 157, 137);
+        background: linear-gradient(
+          0deg,
+          rgba(217, 157, 137, 1) 0%,
+          rgba(217, 157, 137, 1) 35%,
+          rgba(255, 255, 255, 1) 100%
+        );
+        top: 67%;
+        left: 35%;
+        border-radius: 100%;
+      }
+
+      #bulle2 {
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        background: rgb(217, 157, 137);
+        background: linear-gradient(
+          0deg,
+          rgba(174, 105, 1) 0%,
+          rgba(217, 157, 137, 1) 35%,
+          rgba(175, 123, 190, 1) 100%
+        );
+        top: 82%;
+        left: 30%;
+        border-radius: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="page">
+      <div class="wrap">
+        <div id="bloc1"></div>
+        <div id="bloc2"></div>
+        <div id="bloc3"></div>
+        <div id="bloc4"></div>
+
+        <div id="window">
+          <div id="frame1"></div>
+          <div id="frame2"></div>
+        </div>
+
+        <div id="big-triangle"></div>
+        <div id="inner-triangle"></div>
+
+        <div class="ball" id="ball1"></div>
+        <div class="ball" id="ball2"></div>
+        <div class="ball" id="ball3"></div>
+        <div class="ball" id="ball4"></div>
+        <div class="ball" id="ball5"></div>
+        <div class="ball" id="ball6"></div>
+        <div class="ball" id="ball7"></div>
+        <div class="ball" id="ball8"></div>
+
+        <div id="outer-cube"></div>
+
+        <div id="cadre1"></div>
+        <div id="cadre2"></div>
+
+        <div id="bulle"></div>
+        <div id="bulle2"></div>
+      </div>
+    </div>
+  </body>
+</html>
