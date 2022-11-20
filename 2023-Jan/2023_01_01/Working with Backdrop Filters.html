@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Working with Backdrop Filters</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Poiret+One&display=swap");
+
+      * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+        font-family: "Poiret One", cursive;
+      }
+      :root {
+        --hw: 150px;
+        --clr_light: hsl(0, 0%, 100%);
+      }
+      body {
+        background-image: url("https://images.unsplash.com/photo-1659264734878-63ca3d2215e6?crop=entropy&cs=tinysrgb&fm=jpg&ixid=MnwzMjM4NDZ8MHwxfHJhbmRvbXx8fHx8fHx8fDE2NjA1ODM1ODE&ixlib=rb-1.2.1&q=80");
+        background-size: cover;
+        min-height: 100vh;
+        padding: 20px;
+        display: grid;
+        place-content: center;
+        place-items: center;
+        color: var(--clr_light);
+      }
+
+      h1 {
+        font-size: 3rem;
+        text-transform: uppercase;
+        padding: 5px;
+      }
+      main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+        min-height: 90vh;
+      }
+      .card {
+        width: var(--hw);
+        aspect-ratio: 1;
+        border-top: 1px solid var(--clr_light);
+        border-left: 1px solid var(--clr_light);
+        border-radius: calc(var(--hw) / 10);
+        backdrop-filter: var(--filter);
+        color: white;
+        padding: 10px;
+        box-shadow: 10px 10px 10px hsl(0 0% 35% / 25%);
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>backdrop-filter</h1>
+    </header>
+    <main>
+      <div class="card" style="--filter: blur(10px)">Blur 10px</div>
+      <div class="card" style="--filter: brightness(60%)">Brightness 60%</div>
+      <div class="card" style="--filter: contrast(40%)">Contrast 40%</div>
+      <div class="card" style="--filter: drop-shadow(4px 4px 10px blue)">
+        Drop Shadow
+      </div>
+      <div class="card" style="--filter: grayscale(60%)">Grayscale 60%</div>
+      <div class="card" style="--filter: hue-rotate(120deg)">
+        Hue Rotate 120deg
+      </div>
+      <div class="card" style="--filter: invert(70%)">Invert 70%</div>
+      <div class="card" style="--filter: opacity(20%)">Opacity 20%</div>
+      <div class="card" style="--filter: sepia(90%)">Sepia 90%</div>
+      <div class="card" style="--filter: saturate(40%)">Saturate 40%</div>
+      <div class="card" style="--filter: hue-rotate(270deg) blur(5px)">
+        <p>Hue Rotate 270deg</p>
+        <p>Blur 5px</p>
+      </div>
+      <div class="card" style="--filter: blur(10px)">
+        <p>Doesn't seem to work on my iPad in Chrome or Safari!</p>
+      </div>
+    </main>
+  </body>
+</html>

@@ -4,7 +4,56 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Background gradient moves with mouse</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        --offset-x: 0px;
+        --offset-y: 0px;
+        height: 100vh;
+        background: linear-gradient(115deg, rgb(211, 255, 215), rgb(0, 0, 0)),
+          radial-gradient(
+            90% 100% at calc(50% + var(--offset-x)) calc(0% + var(--offset-y)),
+            rgb(200, 200, 200),
+            rgb(022, 000, 045)
+          ),
+          radial-gradient(
+            100% 100% at calc(80% - var(--offset-x)) calc(0% - var(--offset-y)),
+            rgb(250, 255, 000),
+            rgb(036, 000, 000)
+          ),
+          radial-gradient(
+            150% 210% at calc(100% + var(--offset-x)) calc(0% + var(--offset-y)),
+            rgb(020, 175, 125),
+            rgb(000, 010, 255)
+          ),
+          radial-gradient(
+            100% 100% at calc(100% - var(--offset-x))
+              calc(30% - var(--offset-y)),
+            rgb(255, 077, 000),
+            rgb(000, 200, 255)
+          ),
+          linear-gradient(60deg, rgb(255, 000, 000), rgb(120, 086, 255));
+        background-blend-mode: overlay, overlay, difference, difference,
+          difference, normal;
+      }
+    </style>
   </head>
-  <body></body>
+  <body>
+    <script>
+      bgEl = document.querySelector("body");
+      bgEl.addEventListener("mousemove", (e) => {
+        const target = e.target;
+        const rect = target.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        bgEl.style.setProperty("--offset-x", x + "px");
+        bgEl.style.setProperty("--offset-y", y + "px");
+      });
+    </script>
+  </body>
 </html>
