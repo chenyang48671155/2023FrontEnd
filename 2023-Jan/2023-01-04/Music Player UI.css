@@ -1,0 +1,303 @@
+* {
+  font-family: "Poppins";
+  outline: none;
+}
+
+body {
+  background: hsl(328deg, 58%, 94%);
+  display: flex;
+  height: 100vh;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 2em;
+  overflow-x: hidden;
+  padding: 1em;
+}
+
+.ex {
+  padding-bottom: 53em;
+}
+
+.screen-1 {
+  margin-top: auto;
+  user-select: none;
+  background: #f8e7f1;
+  box-shadow: 20px 20px 60px #d3c4cd, -20px -20px 60px #ffffff, 0 0 2vh 2vh hsl(328deg, 58%, 94%);
+  padding: 1em;
+  border-radius: 20px;
+}
+.screen-1 header {
+  padding: 1.1em;
+  display: flex;
+  gap: 3.4em;
+  color: hsl(337deg, 8%, 69%);
+}
+.screen-1 header ion-icon {
+  padding: 0.5em;
+  background: linear-gradient(145deg, #fff7ff, #dfd0d9);
+  box-shadow: 20px 20px 60px #d3c4cd, -20px -20px 60px #ffffff;
+  border-radius: 50%;
+}
+.screen-1 header span {
+  font-weight: bold;
+  font-size: 0.7em;
+  margin-top: 0.7em;
+}
+.screen-1 .song {
+  margin-top: 4em;
+  padding: 0.1em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.screen-1 .song .img-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1.1em;
+}
+.screen-1 .song .img-container img {
+  border-radius: 50%;
+  width: 10em;
+  height: 10em;
+  border: 0.45em solid hsl(329deg, 54%, 92%);
+  box-shadow: 20px 20px 60px #d3c4cd, -20px -20px 60px #ffffff, 0 0 2vh 2vh hsl(328deg, 58%, 94%);
+}
+.screen-1 .song h1 {
+  color: hsl(337deg, 4%, 39%);
+}
+.screen-1 .song h6 {
+  color: hsl(340deg, 10%, 71%);
+  font-weight: normal;
+  margin-top: -1em;
+}
+.screen-1 .slider {
+  margin-top: 3em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.screen-1 .slider input[type=range] {
+  appearance: none;
+  background: transparent;
+  width: 90%;
+}
+.screen-1 .slider input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 1.2em;
+  height: 1.2em;
+  background: radial-gradient(hsl(332deg, 90%, 81%) 30%, hsl(333deg, 50%, 92%) 30%);
+  border-radius: 50%;
+  margin-top: -5px;
+  cursor: pointer;
+  box-shadow: 0 0 30px #f1f1f1;
+}
+.screen-1 .slider input[type=range]::-moz-range-thumb, .screen-1 .slider input[type=range]::-ms-thumb {
+  width: 1.2em;
+  height: 1.2em;
+  background: radial-gradient(hsl(332deg, 90%, 81%) 30%, hsl(333deg, 50%, 92%) 30%);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 30px #f1f1f1;
+}
+.screen-1 .slider input[type=range]:focus {
+  appearance: none;
+}
+.screen-1 .slider input[type=range]::-ms-track {
+  width: 100%;
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  color: transparent;
+}
+.screen-1 .slider input[type=range]::-webkit-slider-runnable-track {
+  background: hsl(332deg, 76%, 95%);
+  width: 100%;
+  border-radius: 10px;
+  height: 0.5em;
+  cursor: pointer;
+  box-shadow: inset 0 0 5px -2px hsla(0deg, 0%, 0%, 0.5);
+}
+.screen-1 .slider input[type=range]::-moz-range-track, .screen-1 .slider input[type=range]::-ms-track {
+  background: hsl(332deg, 76%, 95%);
+  width: 100%;
+  border-radius: 10px;
+  height: 0.5em;
+  cursor: pointer;
+  box-shadow: inset 0 0 5px -2px hsla(0deg, 0%, 0%, 0.5);
+}
+.screen-1 .slider input[type=range]::-moz-range-progress {
+  background: hsl(331deg, 66%, 79%);
+}
+.screen-1 .slider input[type=range]::-ms-fill-lower {
+  background: hsl(331deg, 66%, 79%);
+}
+.screen-1 .slider span {
+  color: hsl(333deg, 5%, 54%);
+  font-size: 0.7em;
+  margin-top: -3em;
+  z-index: 2;
+}
+.screen-1 .slider .start {
+  margin-right: -2em;
+}
+.screen-1 .slider .end {
+  margin-left: -2.2em;
+}
+.screen-1 .controls {
+  margin-top: 6em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1em;
+  gap: 2em;
+}
+.screen-1 .controls button {
+  background: hsl(335deg, 100%, 96%);
+  box-shadow: 0 0 30px hsl(328deg, 32%, 85%);
+  padding: 0.8em;
+  color: hsl(333deg, 5%, 54%);
+  border: 1px solid hsl(335deg, 100%, 96%);
+  border-radius: 50%;
+}
+.screen-1 .controls button:nth-child(2n) {
+  box-shadow: 0 0 30px hsl(327deg, 22%, 81%);
+  background: hsl(331deg, 67%, 79%);
+  color: white;
+  border: 1px solid hsl(331deg, 67%, 79%);
+}
+
+.screen-2 {
+  user-select: none;
+  background: #f8e7f1;
+  box-shadow: 20px 20px 60px #d3c4cd, -20px -20px 60px #ffffff, 0 0 2vh 2vh hsl(328deg, 58%, 94%);
+  padding: 1em;
+  border-radius: 20px;
+  padding: 0;
+  margin-top: auto;
+}
+.screen-2 header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.65em;
+  color: hsl(337deg, 8%, 69%);
+  font-weight: bold;
+  padding: 2em;
+}
+.screen-2 .title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2em;
+  padding: 1em;
+}
+.screen-2 .title ion-icon {
+  color: hsl(338deg, 5%, 54%);
+  padding: 0.7em;
+  background: hsl(334deg, 94%, 93%);
+  border-radius: 50%;
+  border: 0.1em solid hsl(332deg, 26%, 87%);
+}
+.screen-2 .title img {
+  width: 7em;
+  border-radius: 50%;
+  border: 0.45em solid hsl(329deg, 54%, 92%);
+  box-shadow: 20px 20px 60px #d3c4cd, -20px -20px 60px #ffffff, 0 0 2vh 2vh hsl(328deg, 58%, 94%);
+}
+.screen-2 .songs {
+  display: flex;
+  flex-direction: column;
+}
+.screen-2 .songs .song {
+  margin-top: -1em;
+  display: flex;
+  align-items: center;
+  gap: 3em;
+  padding: 1em;
+}
+.screen-2 .songs .song .details {
+  display: flex;
+  flex-direction: column;
+  color: hsl(337deg, 10%, 68%);
+}
+.screen-2 .songs .song .details span {
+  font-size: 0.7em;
+  margin-top: -1.7em;
+  color: hsl(335deg, 19%, 83%);
+  font-weight: bold;
+}
+.screen-2 .songs .song button {
+  align-self: end;
+  border: 0.1em solid hsl(335deg, 61%, 90%);
+  border-radius: 50%;
+  padding-top: 0.45em;
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  padding-bottom: 0.45em;
+  box-shadow: 0 0 2em 0.1em #fff, inset 0 0 1em -0.8em #333, inset 0 0 3em -1.9em #fff;
+}
+.screen-2 .songs .song button ion-icon {
+  color: hsl(334deg, 11%, 62%);
+}
+.screen-2 .songs .song:nth-child(1n) button {
+  margin-left: 6.5em;
+  background: hsl(333deg, 94%, 93%);
+}
+.screen-2 .songs .song:nth-child(1n) button ion-icon {
+  color: hsl(334deg, 11%, 62%);
+}
+.screen-2 .songs .song:nth-child(3n) button {
+  background: hsl(333deg, 94%, 93%);
+  margin-left: 4.5em;
+}
+.screen-2 .songs .song:nth-child(3n) button ion-icon {
+  color: hsl(334deg, 11%, 62%);
+}
+.screen-2 .songs .song:nth-child(2n) button {
+  margin-left: 8.5em;
+  background: hsl(331deg, 67%, 79%);
+}
+.screen-2 .songs .song:nth-child(2n) button ion-icon {
+  color: white;
+}
+.screen-2 .songs .song:nth-child(4n) button {
+  background: hsl(333deg, 94%, 93%);
+  margin-left: 2.9em;
+}
+.screen-2 .songs .song:nth-child(4n) button ion-icon {
+  color: hsl(334deg, 11%, 62%);
+}
+.screen-2 .songs .song:nth-child(5n) button {
+  margin-left: 8.5em;
+  background: hsl(333deg, 94%, 93%);
+}
+.screen-2 .songs .song:nth-child(5n) button ion-icon {
+  color: hsl(334deg, 11%, 62%);
+}
+.screen-2 .songs .song:nth-child(6n) button {
+  margin-left: 5.5em;
+  background: hsl(333deg, 94%, 93%);
+}
+.screen-2 .songs .song:nth-child(6n) button ion-icon {
+  color: hsl(334deg, 11%, 62%);
+}
+.screen-2 .songs .song:nth-child(7n) button {
+  margin-left: 7.5em;
+  background: hsl(333deg, 94%, 93%);
+}
+.screen-2 .songs .song:nth-child(7n) button ion-icon {
+  color: hsl(334deg, 11%, 62%);
+}
+
+@media screen and (max-width: 730px) {
+  body {
+    flex-direction: column;
+  }
+  .screen-1,
+.screen-2 {
+    margin: auto;
+  }
+}/*# sourceMappingURL=Music Player UI.css.map */

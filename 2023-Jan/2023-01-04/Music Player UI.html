@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Poppins:100,300,400,500,600,700,800,900"
+    />
+    <link rel="stylesheet" href="./Music Player UI.css" />
+    <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <title>Music Player UI</title>
+  </head>
+  <body>
+    <div class="ex"></div>
+    <div class="screen-1">
+      <header>
+        <ion-icon name="arrow-back-outline"></ion-icon><span>NOW PLAYING</span>
+        <ion-icon name="menu-outline"></ion-icon>
+      </header>
+      <div class="player">
+        <div class="song">
+          <div class="img-container">
+            <img
+              src="https://upload.wikimedia.org/wikipedia/en/c/cd/Taylor_Swift_-_Lover.png"
+              alt="Lover Album Cover"
+            />
+          </div>
+          <h1>ME!</h1>
+          <h6>Taylor Swift</h6>
+        </div>
+        <div class="slider">
+          <span class="start">0:00</span>
+          <input class="input" type="range" value="0" /><span class="end"
+            >3:13</span
+          >
+        </div>
+        <div class="controls">
+          <button>
+            <ion-icon name="play-back-sharp"></ion-icon>
+          </button>
+          <button>
+            <ion-icon name="pause-sharp"></ion-icon>
+          </button>
+          <button>
+            <ion-icon name="play-forward-sharp"></ion-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="screen-2">
+      <header><span>Taylor Swift &middot; Lover</span></header>
+      <div class="title">
+        <ion-icon name="star"></ion-icon
+        ><img
+          src="https://upload.wikimedia.org/wikipedia/en/c/cd/Taylor_Swift_-_Lover.png"
+          alt="Lover Album Cover"
+        />
+        <ion-icon name="ellipsis-horizontal"></ion-icon>
+      </div>
+      <div class="songs">
+        <div class="song">
+          <div class="details">
+            <h5>Cruel Summer</h5>
+            <span>Taylor Swift</span>
+          </div>
+          <button>
+            <ion-icon name="play-sharp"></ion-icon>
+          </button>
+        </div>
+        <div class="song">
+          <div class="details">
+            <h5>ME!</h5>
+            <span>Taylor Swift</span>
+          </div>
+          <button>
+            <ion-icon name="pause-sharp"></ion-icon>
+          </button>
+        </div>
+        <div class="song">
+          <div class="details">
+            <h5>I Forgot You Existed</h5>
+            <span>Taylor Swift</span>
+          </div>
+          <button>
+            <ion-icon name="play-sharp"></ion-icon>
+          </button>
+        </div>
+        <div class="song">
+          <div class="details">
+            <h5>You Need to calm down</h5>
+            <span>Taylor Swift</span>
+          </div>
+          <button>
+            <ion-icon name="play-sharp"></ion-icon>
+          </button>
+        </div>
+        <div class="song">
+          <div class="details">
+            <h5>Lover</h5>
+            <span>Taylor Swift</span>
+          </div>
+          <button>
+            <ion-icon name="play-sharp"></ion-icon>
+          </button>
+        </div>
+        <div class="song">
+          <div class="details">
+            <h5>I Think He Knows</h5>
+            <span>Taylor Swift</span>
+          </div>
+          <button>
+            <ion-icon name="play-sharp"></ion-icon>
+          </button>
+        </div>
+        <div class="song">
+          <div class="details">
+            <h5>London Boy</h5>
+            <span>Taylor Swift</span>
+          </div>
+          <button>
+            <ion-icon name="play-sharp"></ion-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module">
+      // Span Change
+      let start = document.querySelector(".start"),
+        input = document.querySelector(".input");
+
+      addEventListener("input", () => {
+        let x = Math.abs(Math.round(input.value / 30)),
+          y = Math.round((input.value / 76) * 10);
+        start.innerHTML = `${x}` + ":" + `${y}`;
+        if (y === 0) {
+          start.innerHTML = `${x}` + ":" + `${y}0`;
+        } else if (y === 1) {
+          start.innerHTML = `${x}` + ":" + `${y}1`;
+        } else if (y === 2) {
+          start.innerHTML = `${x}` + ":" + `${y}2`;
+        } else if (y === 3) {
+          start.innerHTML = `${x}` + ":" + `${y}3`;
+        } else if (y === 4) {
+          start.innerHTML = `${x}` + ":" + `${y}4`;
+        } else if (y === 5) {
+          start.innerHTML = `${x}` + ":" + `${y}5`;
+        } else if (y === 6) {
+          start.innerHTML = `${x}` + ":" + `11`;
+        } else if (y === 7) {
+          start.innerHTML = `${x}` + ":" + `22`;
+        } else if (y === 8) {
+          start.innerHTML = `${x}` + ":" + `33`;
+        } else if (y === 9) {
+          start.innerHTML = `${x}` + ":" + `44`;
+        }
+      });
+    </script>
+  </body>
+</html>
