@@ -5,7 +5,115 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Loaders</title>
-    <style></style>
+    <style>
+      .loader {
+        position: absolute;
+        margin: 75px auto;
+        width: 150px;
+        height: 150px;
+        display: block;
+        overflow: hidden;
+      }
+
+      .loader div {
+        height: 100%;
+      }
+
+      /* loader 1 */
+      .loader1,
+      .loader1 div {
+        border-radius: 50%;
+        padding: 8px;
+        border: 2px solid transparent;
+        -webkit-animation: rotate1076 linear 3.5s infinite;
+        animation: rotate1076 linear 3.5s infinite;
+        border-top-color: rgba(0, 0, 0, 0.5);
+        border-bottom-color: rgba(0, 0, 255, 0.5);
+      }
+
+      .loader,
+      .loader * {
+        will-change: transform;
+      }
+
+      @keyframes rotate1076 {
+        0% {
+          transform: rotate(0deg);
+        }
+
+        50% {
+          transform: rotate(180deg);
+        }
+
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
   </head>
-  <body></body>
+  <body>
+    <div class="loader loader1">
+      <div>
+        <div>
+          <div>
+            <div>
+              <div>
+                <div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="loader loader2">
+      <div>
+        <div>
+          <div>
+            <div>
+              <div>
+                <div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="loader loader3">
+      <div>
+        <div>
+          <div>
+            <div>
+              <div>
+                <div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="loader loader4">
+      <div>
+        <div>
+          <div>
+            <div>
+              <div>
+                <div>
+                  <div>
+                    <div>
+                      <div>
+                        <div></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
