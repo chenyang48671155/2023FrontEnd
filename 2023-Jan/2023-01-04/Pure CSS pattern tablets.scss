@@ -1,0 +1,11 @@
+$d: 8em;
+$c: #160c28;
+
+html {
+  background: repeating-conic-gradient(transparent 0% 25%, $c 0% 50%) 0.25 * $d
+      0.25 * $d,
+    radial-gradient(closest-side, transparent calc(100% - 1px), $c) 0.25 * $d
+      0.25 * $d,
+    linear-gradient(135deg, #d1dfd6 50%, #efab48 0);
+  background-size: $d $d, 0.5 * $d 0.5 * $d;
+}
