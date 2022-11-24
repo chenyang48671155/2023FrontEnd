@@ -5,7 +5,56 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>LOADERS</title>
-    <style></style>
+    <style>
+      .loader {
+        --bgcolor: #00000033 20px, transparent 0;
+        --loadercolor: #0071e2 20px, transparent 0;
+        width: 140px;
+        height: 20px;
+        background-image: linear-gradient(var(--bgcolor)),
+          linear-gradient(var(--bgcolor)), linear-gradient(var(--bgcolor)),
+          linear-gradient(var(--bgcolor));
+        background-repeat: no-repeat;
+        background-size: 20px auto;
+        background-position: 0 0, 40px 0, 80px 0, 120px 0;
+        animation: loaderfill 1s linear infinite;
+      }
+
+      @keyframes loaderfill {
+        0% {
+          background-image: linear-gradient(var(--bgcolor)),
+            linear-gradient(var(--bgcolor)), linear-gradient(var(--bgcolor)),
+            linear-gradient(var(--bgcolor));
+        }
+
+        25% {
+          background-image: linear-gradient(var(--loadercolor)),
+            linear-gradient(var(--bgcolor)), linear-gradient(var(--bgcolor)),
+            linear-gradient(var(--bgcolor));
+        }
+
+        50% {
+          background-image: linear-gradient(var(--loadercolor)),
+            linear-gradient(var(--loadercolor)), linear-gradient(var(--bgcolor)),
+            linear-gradient(var(--bgcolor));
+        }
+
+        75% {
+          background-image: linear-gradient(var(--loadercolor)),
+            linear-gradient(var(--loadercolor)),
+            linear-gradient(var(--loadercolor)), linear-gradient(var(--bgcolor));
+        }
+
+        100% {
+          background-image: linear-gradient(var(--loadercolor)),
+            linear-gradient(var(--loadercolor)),
+            linear-gradient(var(--loadercolor)),
+            linear-gradient(var(--loadercolor));
+        }
+      }
+    </style>
   </head>
-  <body></body>
+  <body>
+    <div class="loader"></div>
+  </body>
 </html>
