@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Loaders</title>
+    <style>
+      .loader {
+        width: 50px;
+        height: 50px;
+        border: 5px solid rgb(0, 0, 0, 0.11);
+        border-radius: 50%;
+        border-top-color: rgb(235, 169, 47);
+        border-left-color: rgb(43, 145, 87);
+        border-right-color: rgb(20, 102, 226);
+        border-bottom-color: rgb(224, 71, 71);
+        animation: loader1776 2s linear infinite;
+      }
+
+      @keyframes loader1776 {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="loader"></div>
+  </body>
+</html>
