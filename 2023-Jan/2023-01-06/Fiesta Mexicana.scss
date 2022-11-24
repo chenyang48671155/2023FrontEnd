@@ -1,0 +1,14 @@
+* {
+  user-select: none;
+}
+
+body {
+  background-color: #212121; // black
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.is-hover {
+  cursor: pointer;
+}
