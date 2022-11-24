@@ -5,7 +5,54 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>BUTTON</title>
-    <style></style>
+    <style>
+      body {
+        background-color: grey;
+      }
+      button {
+        width: 140px;
+        height: 45px;
+        font-size: 23px;
+        cursor: pointer;
+        border: none;
+        outline: none;
+        background: transparent;
+        color: white;
+        font-family: "Times New Roman", Times, serif;
+        font-weight: 700;
+        position: relative;
+        -webkit-transition: all 0.5s;
+        transition: all 0.5s;
+        z-index: 1;
+      }
+
+      button::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 5px;
+        height: 100%;
+        background-color: white;
+        z-index: -1;
+        -webkit-transition: all 0.5s;
+        transition: all 0.5s;
+      }
+
+      button:hover::before {
+        width: 100%;
+      }
+
+      button:hover {
+        color: black;
+      }
+
+      button:active:before {
+        background: #b9b9b9;
+      }
+    </style>
   </head>
-  <body></body>
+  <body>
+    <button>Button</button>
+  </body>
 </html>
