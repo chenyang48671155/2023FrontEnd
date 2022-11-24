@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/browse/@types/react@16.4.14/index.d.ts"></script>
+    <script src="https://unpkg.com/browse/@types/react-dom@17.0.2/index.d.ts"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/classnames/2.3.1/index.min.js"></script>
+    <script src="https://codepen.io/Hyperplexed/pen/xxYJYjM/54407644e24173ad6019b766443bf2a6.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.24.0/axios.min.js"></script>
+    <link rel="stylesheet" href="./Sassy Search Bar 💁.css" />
+    <title>Sassy Search Bar 💁</title>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <script>
+              enum Icon {
+        EmojiAstonished = "fa-light fa-face-astonished",
+        EmojiAwesome = "fa-light fa-face-awesome",
+        EmojiConfounded = "fa-light fa-face-confounded",
+        EmojiCowboyHat = "fa-light fa-face-cowboy-hat",
+        EmojiDisguise = "fa-light fa-face-disguise",
+        EmojiDizzy = "fa-light fa-face-dizzy",
+        EmojiElated = "fa-light fa-face-laugh-beam",
+        EmojiGiggle = "fa-light fa-face-beam-hand-over-mouth",
+        EmojiLaugh = "fa-light fa-face-laugh-squint",
+        EmojiTired = "fa-light fa-face-tired",
+        EmojiWink = "fa-light fa-face-grin-wink",
+        Loading = "fa-regular fa-spinner-third",
+        Search = "fa-regular fa-magnifying-glass"
+      }
+
+      enum Icon {
+        Loading = "fa-regular fa-spinner-third",
+        Search = "fa-regular fa-magnifying-glass"
+      }
+
+      enum Interaction {
+        CorrectQuery = "Correct Query",
+        Duplicate = "Duplicate",
+        Initiated = "Initiated",
+        Leaving = "Leaving",
+        Returning = "Returning",
+        Typing = "Typing",
+        Unknown = "Unknown"
+      }
+
+      enum RequestStatus {
+        Error = "Error",
+        Idle = "Idle",
+        Loading = "Loading",
+        Success = "Success"
+      }
+
+      type UnsplashPhotoCollectionID = "animals" | "architecture" | "coffee" | "food" | "nature";
+
+      interface IUnsplashPhotoUrls {
+        full: string;
+        regular: string;
+        small: string;
+        thumbnail: string;
+      }
+
+      interface IUnsplashCreator {
+        name: string;
+        link: string;
+        photo: string;
+      }
+
+      interface IUnsplashPhoto {
+        color: string;
+        creator: IUnsplashCreator;
+        id: string;
+        urls: IUnsplashPhotoUrls;
+      }
+
+      interface INumberUtility {
+        random: (min: number, max: number) => number;
+      }
+
+      const NumberUtility: INumberUtility = {
+        random: (min: number, max: number): number => {
+          return Math.floor(Math.random() * (max - min + 1) + min);
+        }
+      }
+
+      interface IInteractionUtility {
+        determineSass: (state: IAppState) => ISearchBarSass;
+        getRandomEmoji: (emojis: Icon[]) => Icon;
+        getRandomStatement: (statements: string[]) => string;
+      }
+
+      const InteractionUtility: IInteractionUtility = {
+        determineSass: (state: IAppState): string => {
+          let statement: string = InteractionUtility.getRandomStatement([
+            "Welcome! Please click on the search bar.",
+            "Good day to you. Please click above to begin.",
+            "Hello. Please click on me to continue."
+          ]);
+
+          let emoji: Icon = Icon.Search;
+
+          if(state.status === RequestStatus.Loading) {
+            statement = InteractionUtility.getRandomStatement([
+              "Searching across the universe.",
+              "Scanning every image ever.",
+              "Finding your precious results.",
+              "Boop beep bop boop."
+            ]);
+
+            emoji = Icon.Loading;
+          } else if(state.interaction === Interaction.Typing) {
+            if(state.query.trim() === "") {
+              statement = InteractionUtility.getRandomStatement([
+                `You can't search "nothing", you silly goose.`,
+                `That, my friends, is what we call an "empty string".`,
+                "Am bored. Pls send more letters."
+              ]);
+
+              emoji = Icon.EmojiDizzy;
+            } else {
+              statement = InteractionUtility.getRandomStatement([
+                "Great work lol.",
+                "Those are some good letters.",
+                "Hit enter to search.",
+                "Are you sure?",
+                "Is that all?"
+              ]);
+
+              emoji = InteractionUtility.getRandomEmoji([Icon.EmojiDisguise, Icon.EmojiGiggle, Icon.EmojiLaugh, Icon.EmojiWink]);
+            }
+          } else if (state.interaction === Interaction.Leaving) {
+            statement = InteractionUtility.getRandomStatement([
+              "Not good enough for ya, eh?",
+              "Sayonara!",
+              "Not even so much as a goodbye?",
+              "Fine, cya later.",
+              "See if I care!"
+            ]);
+
+            emoji = Icon.EmojiConfounded;
+          } else if (state.interaction === Interaction.Returning) {
+            statement = InteractionUtility.getRandomStatement([
+              "Hooray, you're back!",
+              "Please don't leave me again.",
+              "It's searchin' time!"
+            ]);
+
+            emoji = InteractionUtility.getRandomEmoji([Icon.EmojiElated, Icon.EmojiCowboyHat]);
+          } else if (state.interaction === Interaction.CorrectQuery) {
+            statement = InteractionUtility.getRandomStatement([
+              "Oh wow. We actually have results for that. Here you go.",
+              "Well, well, well. Somebody must've been here before. Enjoy.",
+              "Get that on your first try, did you? Doubt it."
+            ]);
+
+            emoji = Icon.EmojiAstonished;
+          } else if (state.interaction === Interaction.Duplicate) {
+            statement = InteractionUtility.getRandomStatement([
+              "Yeah, you just searched that. Try something else.",
+              "Be original please. I just searched that.",
+              "C'mon now. Don't make me search that again."
+            ]);
+
+            emoji = InteractionUtility.getRandomEmoji([Icon.EmojiConfounded, Icon.EmojiTired]);
+          } else if(state.interaction === Interaction.Initiated) {
+            if(state.searching) {
+              statement = InteractionUtility.getRandomStatement([
+                `Great search. Here's some ${state.collectionID} as a reward.`,
+                `Hmm, haven't heard of that. Have some ${state.collectionID} instead.`,
+                `Search poorly worded. Returning some ${state.collectionID} instead.`
+              ]);
+            } else {
+              statement = InteractionUtility.getRandomStatement([
+                "Good job! Now start typing.",
+                "Wow, you did it. Step 1 complete."
+              ]);
+            }
+
+            emoji = InteractionUtility.getRandomEmoji([Icon.EmojiAwesome, Icon.EmojiElated]);
+          }
+
+          return {
+            emoji,
+            statement
+          }
+        },
+        getRandomEmoji: (emojis: Icon[]): Icon => {
+          const rand: number = NumberUtility.random(0, emojis.length - 1);
+
+          return emojis[rand];
+        },
+        getRandomStatement: (statements: string[]): string => {
+          const rand: number = NumberUtility.random(0, statements.length - 1);
+
+          return statements[rand];
+        }
+      }
+
+      interface ISearchBarSass {
+        emoji: Icon;
+        statement: string;
+      }
+
+      const defaultSass = (): ISearchBarSass => ({
+        emoji: null,
+        statement: ""
+      });
+
+      const SearchBarSass: React.FC = () => {
+        const { state } = React.useContext<IAppContext>(AppContext);
+
+        const [sass, setSassTo] = React.useState<ISearchBarSass>(defaultSass());
+
+        React.useEffect(() => {
+          setSassTo(InteractionUtility.determineSass(state));
+        }, [state]);
+
+        const getIconWrapperClasses = (): string => {
+          const emoji: boolean = (
+            state.interaction !== Interaction.Unknown &&
+            state.status !== RequestStatus.Loading
+          );
+
+          const typing: boolean = state.interaction === Interaction.Typing;
+
+          return classNames({ emoji, typing });
+        }
+
+        const getIconClasses = (): string => {
+          return classNames(
+            sass.emoji, {
+            "spin-animation": state.status === RequestStatus.Loading
+          });
+        }
+
+        return (
+          <div id="search-bar-sass">
+            <div id="search-bar-sass-icon" className={getIconWrapperClasses()}>
+              <i key={NumberUtility.random(1, 10000)} className={getIconClasses()} />
+            </div>
+            <h1 key={NumberUtility.random(1, 10000)} id="search-bar-sass-statement">{sass.statement}</h1>
+          </div>
+        )
+      }
+
+      interface SearchResultProps {
+        index: number;
+        result: IUnsplashPhoto;
+      }
+
+      const SearchResult: React.FC<SearchResultProps> = (props: SearchResultProps) => {
+        const [visible, setVisibleTo] = React.useState<boolean>(false),
+              [loaded, setLoadedTo] = React.useState<boolean>(false),
+              [size, setSizeTo] = React.useState<number>(0);
+
+        const { result } = props;
+
+        React.useEffect(() => {
+          setSizeTo(NumberUtility.random(5, 10));
+        }, []);
+
+        React.useEffect(() => {
+          if(visible) {
+            const preview: HTMLImageElement = new Image();
+            preview.src = result.urls.small;
+
+            preview.onload = () => {
+              setLoadedTo(true);
+            };
+          }
+        }, [visible]);
+
+        React.useEffect(() => {
+          const ms: number = (props.index * 50) + NumberUtility.random(0, 50);
+
+          const timeout: NodeJS.Timeout = setTimeout(() => {
+            setVisibleTo(true);
+          }, ms);
+
+          return () => {
+            clearTimeout(timeout);
+          }
+        }, []);
+
+        const classes: string = classNames("search-result", { loaded, visible });
+
+        const photoUrl: string = `https://unsplash.com/photos/${result.id}?utm_source=CodePen&utm_medium=referral`,
+              creatorUrl: string = `${result.creator.link}?utm_source=CodePen&utm_medium=referral`;
+
+        const backgroundImage: string = `url(${result.urls.small}), url(${result.urls.thumbnail})`,
+              gridRowEnd: string = `span ${size}`;
+
+        return (
+          <div className={classes} style={{ gridRowEnd }}>
+            <a className="search-result-background" href={photoUrl} style={{ backgroundColor: result.color, backgroundImage }} target="_blank" />
+            <div className="search-result-info-wrapper">
+              <div className="search-result-info">
+                <a className="search-result-creator" href={creatorUrl} target="_blank">{result.creator.name}</a>
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+      interface SearchResultsProps {
+        results: IUnsplashPhoto[];
+      }
+
+      const SearchResults: React.FC<SearchResultsProps> = (props: SearchResultsProps) => {
+        const getResults = (): JSX.Element[] => {
+          return props.results.map((result: IUnsplashPhoto, index: number) => (
+            <SearchResult key={result.id} index={index} result={result} />
+          ));
+        }
+
+        return (
+          <div id="search-results-wrapper">
+            <div id="search-results">
+              {getResults()}
+            </div>
+          </div>
+        );
+      }
+
+      const SearchBar: React.FC = () => {
+        const { state, setInteractionTo, setStateTo } = React.useContext<IAppContext>(AppContext);
+
+        const ref: React.MutableRefObject<HTMLInputElement> = React.useRef<HTMLInputElement>(null);
+
+        const focused: boolean = state.interaction !== Interaction.Unknown && state.interaction !== Interaction.Leaving,
+              querying: boolean = state.query !== "";
+
+        const simulateSearch = (collectionID: UnsplashPhotoCollectionID): Promise<IUnsplashPhoto[]> => {
+          return new Promise((resolve) => {
+            setTimeout(() => {
+              resolve(UnsplashPhotoRepository.random(30, collectionID));
+            }, 800);
+          });
+        }
+
+        const handleOnSearch = async (): Promise<void> => {
+          if(state.query.trim() === "") {
+            return;
+          } else if(state.query.trim() === state.previousQuery.trim()) {
+            setInteractionTo(Interaction.Duplicate);
+          } else if(state.status !== RequestStatus.Loading) {
+            setStateTo({
+              ...state,
+              results: [],
+              status: RequestStatus.Loading
+            });
+
+            const collectionID: UnsplashPhotoCollectionID = UnsplashPhotoRepository.randomCollection(state.query),
+                  matches: boolean = state.query.trim().toLowerCase() === collectionID,
+                  interaction: Interaction = matches ? Interaction.CorrectQuery : Interaction.Initiated;
+
+            const results: IUnsplashPhoto[] = await simulateSearch(collectionID);
+
+            setStateTo({
+              ...state,
+              collectionID,
+              interaction,
+              previousQuery: state.query.trim(),
+              results,
+              searching: true,
+              status: RequestStatus.Success
+            });
+          }
+        }
+
+        const handleOnBlur = (): void => {
+          setInteractionTo(Interaction.Leaving);
+        }
+
+        const handleOnChange = (query: string): void => {
+          setStateTo({
+            ...state,
+            interaction: Interaction.Typing,
+            query
+          })
+        }
+
+        const handleOnFocus = (): void => {
+          if(state.interaction === Interaction.Leaving) {
+            setInteractionTo(Interaction.Returning);
+          } else {
+            setInteractionTo(Interaction.Initiated);
+          }
+        }
+
+        const handleOnKeyDown = (e: any): void => {
+          if(e.key === "Enter") {
+            handleOnSearch();
+          }
+        }
+
+        const getClicker = (): JSX.Element => {
+          if(!focused && !state.searching) {
+            const handleOnClick = (): void => {
+              ref.current.focus();
+            }
+
+            return (
+              <div id="search-bar-clicker" onClick={handleOnClick} />
+            );
+          }
+        }
+
+        const getResetButton = (): JSX.Element => {
+          if(state.searching) {
+            const handleOnReset = (): void => {
+              setStateTo(defaultAppState());
+            }
+
+            return (
+              <button id="search-bar-reset-button" type="button" onClick={handleOnReset}>
+                <i className="fa-regular fa-arrow-rotate-right" />
+              </button>
+            );
+          }
+        }
+
+        return (
+          <div id="search-bar-aligner" className={classNames({ focused, querying, searching: state.searching })}>
+            <div id="search-bar-wrapper">
+              <div id="search-bar">
+                {getClicker()}
+                <i id="search-bar-logo" className={Icon.Search} />
+                <input
+                  autoComplete="off"
+                  onBlur={handleOnBlur}
+                  onFocus={handleOnFocus}
+                  id="search-bar-input"
+                  placeholder="Search"
+                  ref={ref}
+                  type="text"
+                  value={state.query}
+                  onChange={(e: any) => handleOnChange(e.target.value)}
+                  onKeyDown={handleOnKeyDown}
+                />
+                {getResetButton()}
+              </div>
+              <SearchBarSass />
+            </div>
+          </div>
+        );
+      }
+
+      interface IAppState {
+        background: IUnsplashPhoto;
+        collectionID: UnsplashPhotoCollectionID;
+        interaction: Interaction;
+        previousQuery: string;
+        query: string;
+        results: IUnsplashPhoto[];
+        searching: boolean;
+        status: RequestStatus;
+      }
+
+      const defaultAppState = (): IAppState => ({
+        background: UnsplashPhotoRepository.random(1, "animals"),
+        collectionID: null,
+        interaction: Interaction.Unknown,
+        previousQuery: "",
+        query: "",
+        results: [],
+        searching: false,
+        status: RequestStatus.Idle
+      });
+
+      interface IAppContext {
+        state: IAppState;
+        setInteractionTo: (interaction: Interaction) => void;
+        setStateTo: (state: IAppState) => void;
+      }
+
+      const AppContext = React.createContext<IAppContext>(null);
+
+      const App: React.FC = () => {
+        const [state, setStateTo] = React.useState<IAppState>(defaultAppState());
+
+        /* -- Example search -- */
+        React.useEffect(() => {
+          const query: string = "Hit the reset button ➡️",
+                collectionID: UnsplashPhotoCollectionID = UnsplashPhotoRepository.randomCollection();
+
+          setStateTo({ ...state, query, status: RequestStatus.Loading });
+
+          setTimeout(() => {
+            setStateTo({
+              ...state,
+              collectionID,
+              interaction: Interaction.Initiated,
+              query,
+              previousQuery: query,
+              results: UnsplashPhotoRepository.random(30, collectionID),
+              searching: true,
+              status: RequestStatus.Success
+            });
+          }, 500);
+        }, []);
+        /* -- ---------- -- */
+
+        const setInteractionTo = (interaction: Interaction): void => {
+          setStateTo({ ...state, interaction });
+        }
+
+        const getBackgroundStyles = (): React.CSSProperties => ({
+          backgroundColor: state.background.color,
+          backgroundImage: `url(${state.background.urls.regular}), url(${state.background.urls.small})`
+        });
+
+        const value: IAppContext = {
+          state,
+          setInteractionTo,
+          setStateTo
+        }
+
+        const memoizedSearchResults = React.useMemo(
+          () => <SearchResults results={state.results} />,
+          [state.results]
+        );
+
+        return(
+          <AppContext.Provider value={value}>
+            <div id="app">
+              <div id="app-background" className={classNames({ searching: state.searching })}>
+                <div id="app-background-image" style={getBackgroundStyles()} />
+                <div id="app-background-image-filter" />
+              </div>
+              <SearchBar />
+              {memoizedSearchResults}
+            </div>
+          </AppContext.Provider>
+        )
+      }
+
+      ReactDOM.render(<App/>, document.getElementById("root"));
+    </script>
+  </body>
+</html>
