@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CARDS</title>
+    <style>
+      .card {
+        width: 190px;
+        height: 254px;
+        position: relative;
+        background: #f5f5f5;
+        transition: box-shadow 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      }
+
+      .card-img {
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        background-color: #6eee87;
+      }
+
+      .card-info {
+        position: absolute;
+        width: 100%;
+        bottom: 0;
+        padding: 1rem;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+      }
+
+      .card-icon {
+        opacity: 0;
+        transform: translateX(-20%);
+        width: 2em;
+        height: 2em;
+        transition: all 0.3s ease-in-out;
+      }
+
+      svg {
+        --size: 20px;
+        width: var(--size);
+        height: var(--size);
+      }
+
+      /*Text*/
+      p {
+        line-height: 140%;
+      }
+
+      .text-title {
+        font-weight: 900;
+        font-size: 18px;
+      }
+
+      .text-subtitle {
+        color: #333;
+        font-weight: 500;
+        font-size: 16px;
+      }
+
+      /*Hover*/
+      .card:hover {
+        box-shadow: 0 10px 20px 4px rgba(35, 35, 35, 0.1);
+      }
+
+      .card:hover .card-icon {
+        opacity: 1;
+        transform: translateX(20%);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="card-img"></div>
+      <div class="card-info">
+        <div class="card-text">
+          <p class="text-title">This is a title</p>
+          <p class="text-subtitle">This is a subtitle</p>
+        </div>
+        <div class="card-icon">
+          <svg viewBox="0 0 28 25">
+            <path
+              d="M13.145 2.13l1.94-1.867 12.178 12-12.178 12-1.94-1.867 8.931-8.8H.737V10.93h21.339z"
+            ></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
