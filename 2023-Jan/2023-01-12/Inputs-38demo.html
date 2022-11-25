@@ -5,7 +5,30 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Input</title>
-    <style></style>
+    <style>
+      .input {
+        border: none;
+        padding: 1rem;
+        border-radius: 1rem;
+        background: #e8e8e8;
+        -webkit-box-shadow: 20px 20px 60px #c5c5c5, -20px -20px 60px #ffffff;
+        box-shadow: 20px 20px 60px #c5c5c5, -20px -20px 60px #ffffff;
+        -webkit-transition: 0.3s;
+        transition: 0.3s;
+      }
+
+      .input:focus {
+        outline-color: #e8e8e8;
+        background: #e8e8e8;
+        -webkit-box-shadow: inset 20px 20px 60px #c5c5c5,
+          inset -20px -20px 60px #ffffff;
+        box-shadow: inset 20px 20px 60px #c5c5c5, inset -20px -20px 60px #ffffff;
+        -webkit-transition: 0.3s;
+        transition: 0.3s;
+      }
+    </style>
   </head>
-  <body></body>
+  <body>
+    <input type="text" name="text" class="input" placeholder="Type here..." />
+  </body>
 </html>
