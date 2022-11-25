@@ -5,7 +5,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Input</title>
-    <style></style>
+    <style>
+      .input-wrapper input {
+        background-color: #eee;
+        border: none;
+        padding: 1rem;
+        font-size: 1rem;
+        width: 13em;
+        border-radius: 1rem;
+        color: lightcoral;
+        box-shadow: 0 0.4rem #dfd9d9;
+        cursor: pointer;
+      }
+
+      .input-wrapper input:focus {
+        outline-color: lightcoral;
+      }
+    </style>
   </head>
-  <body></body>
+  <body>
+    <div class="input-wrapper">
+      <input class="input" name="text" placeholder="Type here..." type="text" />
+    </div>
+  </body>
 </html>
