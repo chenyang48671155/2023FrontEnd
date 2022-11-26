@@ -5,7 +5,63 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Checkboxes</title>
-    <style></style>
+    <style>
+      .check {
+        position: relative;
+        width: 20px;
+        height: 20px;
+        border-radius: 2px;
+        appearance: none;
+        background-color: #bbb;
+        transition: all 0.3s;
+      }
+
+      .check::before {
+        content: "";
+        position: absolute;
+        border: solid #fff;
+        display: block;
+        width: 0.3em;
+        height: 0.6em;
+        border-width: 0 0.2em 0.2em 0;
+        z-index: 1;
+        opacity: 0;
+        right: calc(50% - 0.3em);
+        top: calc(50% - 0.6em);
+        transform: rotate(0deg);
+        transition: all 0.3s;
+        transform-origin: center center;
+      }
+
+      .check:checked {
+        animation: a 0.3s ease-in forwards;
+        background-color: rgb(120, 190, 120);
+      }
+
+      .check:checked::before {
+        opacity: 1;
+        transform: rotate(405deg);
+      }
+
+      @keyframes a {
+        0% {
+          opacity: 1;
+          transform: scale(1) rotateY(0deg);
+        }
+
+        50% {
+          opacity: 0;
+          transform: scale(0.8) rotateY(180deg);
+        }
+
+        100% {
+          opacity: 1;
+          transform: scale(1) rotateY(360deg);
+        }
+      }
+    </style>
   </head>
-  <body></body>
+  <body>
+    <input checked="" class="check" type="checkbox" />
+  </body>
 </html>
