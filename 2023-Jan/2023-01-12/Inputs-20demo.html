@@ -5,7 +5,105 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Input</title>
-    <style></style>
+    <style>
+      .containerInput {
+        background-color: #000;
+        position: relative;
+        overflow: hidden;
+        margin: 0;
+        padding: 0 0 4px 0;
+        z-index: 1;
+        font-size: 15px;
+      }
+
+      .containerInput::before {
+        content: "";
+        width: 110%;
+        aspect-ratio: 1;
+        position: absolute;
+        inset: 0 0 0 0;
+        margin: auto;
+        -webkit-animation: rotate6234 2.5s ease-in-out infinite;
+        animation: rotate6234 2.5s ease-in-out infinite;
+        z-index: -1;
+        background-image: conic-gradient(
+          from 0deg at 50% 50%,
+          #073aff00 0%,
+          #ff0000ff 25%,
+          #073aff00 25%
+        );
+      }
+
+      .containerInput > input {
+        width: 210px;
+        height: 50px;
+        font-size: inherit;
+        color: #fff;
+        border: none;
+        padding: 12px;
+        background-color: #0a0a0a;
+        outline: 5px solid #0a0a0a;
+      }
+
+      .containerInput > input:focus {
+        outline: none;
+      }
+
+      .containerInput > input:not(:-moz-placeholder-shown) {
+        outline: none;
+      }
+
+      .containerInput > input:not(:-ms-input-placeholder) {
+        outline: none;
+      }
+
+      .containerInput > input:not(:placeholder-shown) {
+        outline: none;
+      }
+
+      .containerInput > input:not(:-moz-placeholder-shown):valid {
+        outline: 4px solid rgb(0, 255, 183);
+        border-radius: 0;
+      }
+
+      .containerInput > input:not(:-ms-input-placeholder):valid {
+        outline: 4px solid rgb(0, 255, 183);
+        border-radius: 0;
+      }
+
+      .containerInput > input:not(:placeholder-shown):valid {
+        outline: 4px solid rgb(0, 255, 183);
+        border-radius: 0;
+      }
+
+      @-webkit-keyframes rotate6234 {
+        from {
+          -webkit-transform: rotate(0deg);
+          transform: rotate(0deg);
+        }
+
+        to {
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+        }
+      }
+
+      @keyframes rotate6234 {
+        from {
+          -webkit-transform: rotate(0deg);
+          transform: rotate(0deg);
+        }
+
+        to {
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+        }
+      }
+    </style>
   </head>
-  <body></body>
+  <body>
+    <div class="containerInput">
+      <input placeholder="Type for validate" type="text" />
+    </div>
+  </body>
 </html>
