@@ -4,8 +4,414 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css?family=Pacifico|Staatliches"
+      rel="stylesheet"
+    />
     <title>Toggle switches</title>
-    <style></style>
+    <style>
+      0:root {
+        --thumb-color: #ffcc33;
+        --toggle-h: 20rem;
+        --toggle-w: 50rem;
+        --thumb-size: 22rem;
+        --crater1-w: 4.1;
+        --crater1-h: 3.6;
+        --crater2-w: 3.8;
+        --crater2-h: 4;
+        --crater3-w: 2.1;
+        --crater3-h: 1.5;
+        --wave-size: 7.7rem;
+        --star-size: 0.6rem;
+      }
+      * {
+        transition: 1s all ease-in-out;
+      }
+      HTML {
+        font-size: 10px;
+      }
+      .container {
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+        background: #d6e7f7;
+        font-family: "Pacifico", cursive;
+        will-change: color;
+      }
+      .container .inspired-by-day {
+        left: 0;
+      }
+      .container .inspired-by-night {
+        font-family: "Staatliches", cursive;
+        letter-spacing: 0.1rem;
+        color: #fff;
+        left: -100rem;
+        opacity: 0;
+      }
+      .container.nighttime {
+        background-color: #151d29;
+      }
+      .container.nighttime A {
+        box-shadow: none;
+      }
+      .container P {
+        color: #000;
+        font-size: 1.7rem;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: calc(var(--toggle-h) * 1.5);
+        right: 0;
+        bottom: 0;
+        left: 0;
+        margin: auto;
+        text-shadow: 0.1rem 0.1rem 0.1rem white;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      .container P a {
+        color: gold;
+        margin-left: 0.5rem;
+        text-shadow: 0rem 0rem 0.2rem rgba(0, 0, 0, 0.5);
+      }
+      @media (max-width: 849px) {
+        .container {
+          --toggle-h: 10rem;
+          --toggle-w: 25rem;
+          --thumb-size: 11rem;
+          --wave-size: 3.85rem;
+          --star-size: 0.3rem;
+        }
+        .container .toggle-thumb {
+          width: 11rem;
+          width: var(--thumb-size);
+          height: 11rem;
+          height: var(--thumb-size);
+        }
+        .container .toggle-thumb .crater-1,
+        .container .toggle-thumb .crater-2,
+        .container .toggle-thumb .crater-3 {
+          --crater1-w: 2.05;
+          --crater1-h: 1.8;
+          --crater2-w: 1.9;
+          --crater2-h: 2;
+          --crater3-w: 1.05;
+          --crater3-h: 0.75;
+        }
+      }
+      .toggle-wrapper {
+        position: absolute;
+        width: 50rem;
+        width: var(--toggle-w, 50rem);
+        height: 20rem;
+        height: var(--toggle-h, 20rem);
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        margin: auto;
+        border-radius: 20rem;
+        border-radius: var(--toggle-h, 20rem);
+        display: flex;
+        align-items: center;
+        cursor: pointer;
+      }
+      .toggle-container {
+        position: absolute;
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        border-radius: 20rem;
+        border-radius: var(--toggle-h, 20rem);
+      }
+      .toggle-thumb {
+        width: 22rem;
+        width: var(--thumb-size);
+        height: 22rem;
+        height: var(--thumb-size);
+        border-radius: 50%;
+        position: absolute;
+        z-index: 10;
+        background: gold;
+        box-shadow: 0 0 5rem 0.5rem gold,
+          inset 0 0 0 0.5rem rgba(197, 198, 197, 0),
+          inset 0 0 0 0.1rem rgba(206, 206, 206, 0),
+          inset 0 0 0 0.1rem rgba(214, 214, 214, 0),
+          inset 0 0 0 0.2rem rgba(222, 222, 222, 0),
+          inset 0 0 0 0.2rem rgba(231, 231, 232, 0),
+          inset 0 0 0 0.3rem rgba(231, 231, 232, 0);
+        left: -0.6rem;
+        transform: rotate(-270deg);
+      }
+      .toggle-thumb .crater-1,
+      .toggle-thumb .crater-2,
+      .toggle-thumb .crater-3 {
+        background: #e7e7e8;
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAHUlEQVQYV2O8detWmpqa2iwYzcjAwMCALMhIUAUAAJId7b0H06UAAAAASUVORK5CYII=);
+        position: absolute;
+        border-radius: 50%;
+        box-shadow: inset 0.1rem 0.1rem 0.3rem 0.1rem #d6d6d6;
+        opacity: 0;
+      }
+      .toggle-thumb .crater-1 {
+        width: 4.1rem;
+        width: calc(var(--crater1-w) * 1rem);
+        height: 3.6rem;
+        height: calc(var(--crater1-h) * 1rem);
+        top: 15%;
+        left: 25%;
+        transform: skew(-15deg);
+      }
+      .toggle-thumb .crater-2 {
+        width: 3.8rem;
+        width: calc(var(--crater2-w) * 1rem);
+        height: 4rem;
+        height: calc(var(--crater2-h) * 1rem);
+        top: 50%;
+        right: 10%;
+      }
+      .toggle-thumb .crater-3 {
+        width: 2.1rem;
+        width: calc(var(--crater3-w) * 1rem);
+        height: 1.5rem;
+        height: calc(var(--crater3-h) * 1rem);
+        bottom: 15%;
+        left: 30%;
+      }
+      .toggle-day,
+      .toggle-night {
+        height: 100%;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        border-radius: 20rem;
+        border-radius: var(--toggle-h, 20rem);
+        overflow: hidden;
+      }
+      .toggle-day {
+        left: 0;
+        opacity: 1;
+      }
+      .toggle-day .waves {
+        list-style: none;
+        height: 100%;
+        width: 100%;
+        background: #40b5f8;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        margin: auto;
+        white-space: nowrap;
+        text-align: right;
+      }
+      .toggle-day .waves li {
+        width: 7.7rem;
+        width: var(--wave-size);
+        height: 80%;
+        border-radius: 0 0 var(--wave-size) var(--wave-size);
+        display: inline-block;
+        background: red;
+        position: relative;
+        margin: 0 -1rem;
+        margin: 0 calc(var(--wave-size) / -10);
+        background: linear-gradient(to bottom, #99ccff 0%, #ffffff 100%);
+      }
+      .toggle-day .surfer {
+        width: 3.5rem;
+        height: 3.5rem;
+        background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/66763/surfer1.png);
+        background-size: cover;
+        position: absolute;
+        right: 30%;
+        bottom: 40%;
+        z-index: 10;
+      }
+      .toggle-night {
+        left: calc(calc(100% - calc(var(--thumb-size) - 0.6rem)) * -1);
+        background: linear-gradient(to bottom, #003333 0%, #6666cc 100%);
+        opacity: 0;
+      }
+      .toggle-night .astronaut {
+        width: 4.6rem;
+        height: 3.5rem;
+        background-image: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/66763/astronaut.png);
+        background-size: cover;
+        position: absolute;
+        left: -5%;
+        bottom: 5%;
+        z-index: 10;
+        transform: rotate(-360deg);
+      }
+      .toggle-night .stars {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+      .toggle-night .stars li {
+        width: 0.6rem;
+        width: var(--star-size);
+        height: 0.6rem;
+        height: var(--star-size);
+        background: #e7dec7;
+        position: absolute;
+        transform: rotate(45deg) translateY(-10000%) translateX(-5000%);
+      }
+      .toggle-night .stars li:nth-child(1) {
+        top: 18%;
+        left: 23.6%;
+        opacity: 1;
+      }
+      .toggle-night .stars li:nth-child(2) {
+        top: 32.8%;
+        left: 11.6%;
+        opacity: 0.8;
+      }
+      .toggle-night .stars li:nth-child(3) {
+        top: 28%;
+        left: 41.6%;
+        opacity: 0.8;
+      }
+      .toggle-night .stars li:nth-child(4) {
+        top: 47.8%;
+        left: 35.6%;
+        opacity: 0.6;
+      }
+      .toggle-night .stars li:nth-child(5) {
+        top: 58%;
+        left: 19.6%;
+        opacity: 0.6;
+      }
+      .toggle-night .stars li:nth-child(6) {
+        top: 68%;
+        left: 47.6%;
+        opacity: 0.4;
+      }
+      .toggle-night .stars li:nth-child(7) {
+        top: 73%;
+        left: 7.6%;
+        opacity: 0.2;
+      }
+      .toggle-night .stars li:nth-child(8) {
+        top: 78%;
+        left: 29.5%;
+        opacity: 0.2;
+      }
+      .toggle-checkbox {
+        display: none;
+      }
+      .toggle-checkbox:checked + .toggle-wrapper .toggle-thumb {
+        transform: rotate(0);
+        left: calc(100% - calc(22rem - 0.6rem));
+        left: calc(100% - calc(var(--thumb-size) - 0.6rem));
+        background-color: #f7f7f7;
+        box-shadow: 0 0 0 0 gold, inset 0 0 0 0.5rem rgba(197, 198, 197, 0.5),
+          inset 0 0 0 1rem rgba(206, 206, 206, 0.5),
+          inset 0 0 0 1.5rem rgba(214, 214, 214, 0.5),
+          inset 0 0 0 2rem rgba(222, 222, 222, 0.5),
+          inset 0 0 0 2.5rem rgba(231, 231, 232, 0.5),
+          inset 0 0 0 3rem rgba(231, 231, 232, 0.5);
+      }
+      .toggle-checkbox:checked + .toggle-wrapper .toggle-thumb .crater-1,
+      .toggle-checkbox:checked + .toggle-wrapper .toggle-thumb .crater-2,
+      .toggle-checkbox:checked + .toggle-wrapper .toggle-thumb .crater-3 {
+        opacity: 1;
+      }
+      .toggle-checkbox:checked + .toggle-wrapper .toggle-day {
+        left: calc(100% - calc(var(--thumb-size) - 0.6rem));
+        opacity: 0;
+      }
+      .toggle-checkbox:checked + .toggle-wrapper .toggle-day .surfer {
+        bottom: -100%;
+      }
+      .toggle-checkbox:checked + .toggle-wrapper .toggle-day .waves {
+        height: 200%;
+        bottom: -100%;
+      }
+      .toggle-checkbox:checked + .toggle-wrapper .toggle-night {
+        left: 0;
+        opacity: 1;
+      }
+      .toggle-checkbox:checked + .toggle-wrapper .toggle-night .astronaut {
+        left: 25%;
+        bottom: 35%;
+        z-index: 10;
+        transform: rotate(15deg);
+      }
+      .toggle-checkbox:checked + .toggle-wrapper .toggle-night .stars li {
+        transform: rotate(45deg);
+      }
+      .toggle-checkbox:checked ~ .inspired-by-day {
+        left: 100rem;
+        opacity: 0;
+      }
+      .toggle-checkbox:checked ~ .inspired-by-night {
+        left: 0;
+        opacity: 1;
+      }
+    </style>
   </head>
-  <body></body>
+  <body>
+    <div class="container">
+      <!--  <img src="https://cdn.dribbble.com/users/426215/screenshots/5321869/toggle1.gif" alt=""> -->
+      <input type="checkbox" id="toggle-checkbox" class="toggle-checkbox" />
+      <label for="toggle-checkbox" class="toggle-wrapper">
+        <div class="toggle-thumb">
+          <div class="crater-1"></div>
+          <div class="crater-2"></div>
+          <div class="crater-3"></div>
+        </div>
+
+        <div class="toggle-container">
+          <div class="toggle-night">
+            <div class="astronaut"></div>
+            <ul class="stars">
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+            </ul>
+          </div>
+
+          <div class="toggle-day">
+            <div class="surfer"></div>
+            <ul class="waves">
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+              <li></li>
+            </ul>
+          </div>
+        </div>
+      </label>
+      <p class="inspired-by-day">
+        Inspired by dribbble from
+        <a
+          href="https://dribbble.com/shots/5321869-Playing-with-InVision-Studio"
+          target="_Blank"
+          >Bojan Mesar</a
+        >
+      </p>
+      <p class="inspired-by-night">
+        Inspired by dribbble from
+        <a
+          href="https://dribbble.com/shots/5321869-Playing-with-InVision-Studio"
+          target="_Blank"
+          >Bojan Mesar</a
+        >
+      </p>
+    </div>
+  </body>
 </html>
