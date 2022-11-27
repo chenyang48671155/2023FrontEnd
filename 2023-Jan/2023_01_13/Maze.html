@@ -5,6 +5,396 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Maze</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Audiowide&display=swap");
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        overflow: hidden;
+        cursor: none;
+        background: #000;
+      }
+
+      h1 {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translateX(-50%) translateY(-50%);
+        text-transform: uppercase;
+        color: #f00;
+        font-family: "Audiowide", cursive;
+        font-size: min(128px, 10vw);
+        z-index: 1;
+      }
+
+      #root {
+        opacity: 0;
+        transition: opacity 1s ease-out;
+      }
+
+      #root.-loaded {
+        opacity: 1;
+      }
+
+      .cursor {
+        position: fixed;
+        height: 64px;
+        width: 64px;
+        border-radius: 50%;
+        border: 2px solid #ffffff;
+        transform: translateX(calc(50vw - 32px)) translateY(calc(50vh - 32px));
+      }
+    </style>
   </head>
-  <body></body>
+  <body>
+    <h1>Maze</h1>
+
+    <div id="root">
+      <div class="cursor"></div>
+    </div>
+
+    <script src="https://unpkg.com/three@0.146.0/build/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.146.0/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://unpkg.com/three@0.146.0/examples/js/postprocessing/ShaderPass.js"></script>
+    <script src="https://unpkg.com/three@0.146.0/examples/js/shaders/CopyShader.js"></script>
+    <script src="https://unpkg.com/three@0.146.0/examples/js/postprocessing/RenderPass.js"></script>
+    <script src="https://unpkg.com/three@0.146.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+    <script src="https://unpkg.com/three@0.146.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+
+    <script type="module">
+      // https://www.npmjs.com/package/generate-maze
+      import generateMaze from "https://unpkg.com/generate-maze@1.1.0/dist/generate-maze.module.js";
+
+      const COLOR_SCHEME = Object.freeze({
+        background: 0x000000,
+        wall: 0x777777,
+        floor: 0x333333,
+        box: 0xff0000,
+      });
+
+      class MaterialsLibrary {
+        static wall = new THREE.MeshStandardMaterial({
+          color: COLOR_SCHEME.wall,
+        });
+
+        static floor = new THREE.MeshStandardMaterial({
+          color: COLOR_SCHEME.floor,
+        });
+
+        static box = new THREE.MeshStandardMaterial({
+          color: COLOR_SCHEME.box,
+        });
+      }
+
+      class Maze extends THREE.Group {
+        static #boxGeometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
+        static #wallGeometry = new THREE.BoxGeometry(1.2, 0.2, 1);
+
+        static #addBox(room, roomOptions) {
+          let wallsAround = 0;
+
+          if (roomOptions.left) {
+            wallsAround++;
+          }
+
+          if (roomOptions.right) {
+            wallsAround++;
+          }
+
+          if (roomOptions.top) {
+            wallsAround++;
+          }
+
+          if (roomOptions.bottom) {
+            wallsAround++;
+          }
+
+          if (wallsAround > 1) {
+            return;
+          }
+
+          const boxMaterial = MaterialsLibrary.box;
+          const boxGeometry = Maze.#boxGeometry;
+          const box = new THREE.Mesh(boxGeometry, boxMaterial);
+
+          box.position.set(0, 0.5, -0.5);
+          box.castShadow = true;
+          box.receiveShadow = true;
+
+          room.add(box);
+        }
+
+        static #addWalls(room, roomOptions, x, y, size) {
+          const hasLeftWall = x === 0 || roomOptions.left;
+          const hasRightWall = x === size - 1;
+          const hasTopWall = y === 0 || roomOptions.top;
+          const hasBottomWall = y === size - 1;
+
+          const hasNoWalls =
+            !hasLeftWall && !hasRightWall && !hasTopWall && !hasBottomWall;
+
+          if (hasNoWalls) {
+            return;
+          }
+
+          const wallMaterial = MaterialsLibrary.wall;
+          const wallGeometry = Maze.#wallGeometry;
+
+          if (hasTopWall) {
+            const wall = new THREE.Mesh(wallGeometry, wallMaterial);
+
+            wall.castShadow = true;
+            wall.receiveShadow = true;
+
+            room.add(wall);
+          }
+
+          if (hasBottomWall) {
+            const wall = new THREE.Mesh(wallGeometry, wallMaterial);
+
+            wall.castShadow = true;
+            wall.receiveShadow = true;
+            wall.position.set(0, 1, 0);
+
+            room.add(wall);
+          }
+
+          if (hasLeftWall) {
+            const wall = new THREE.Mesh(wallGeometry, wallMaterial);
+
+            wall.position.set(-0.5, 0.5, 0);
+            wall.rotation.set(0, 0, Math.PI / 2);
+            wall.castShadow = true;
+            wall.receiveShadow = true;
+
+            room.add(wall);
+          }
+
+          if (hasRightWall) {
+            const wall = new THREE.Mesh(wallGeometry, wallMaterial);
+
+            wall.position.set(0.5, 0.5, 0);
+            wall.rotation.set(0, 0, Math.PI / 2);
+            wall.castShadow = true;
+            wall.receiveShadow = true;
+
+            room.add(wall);
+          }
+        }
+
+        constructor() {
+          super();
+
+          this.scale.set(1, -1, 1);
+
+          const size = 20;
+          const areEdgesOpened = false;
+          const seed = Math.random() * 10000;
+          const pattern = generateMaze(size, size, areEdgesOpened, seed);
+
+          for (let x = 0; x < size; x++) {
+            for (let y = 0; y < size; y++) {
+              const room = new THREE.Group();
+              const roomOptions = pattern[y][x];
+
+              Maze.#addBox(room, roomOptions);
+              Maze.#addWalls(room, roomOptions, x, y, size);
+
+              room.position.set(x, y);
+
+              this.add(room);
+            }
+          }
+        }
+      }
+
+      class App {
+        #root;
+        #cursor;
+        #savedObjects;
+        #scene;
+        #camera;
+        #renderer;
+        #composer;
+
+        constructor(root) {
+          this.#root = root;
+          this.#cursor = this.#root.querySelector(".cursor");
+          this.#savedObjects = {};
+
+          this.#initScene();
+          this.#initObjects();
+          this.#initCamera();
+          this.#initRenderer();
+          this.#initComposer();
+          this.#initEventListeners();
+          this.#onWindowResize();
+          this.#root.classList.add("-loaded");
+          this.#animate();
+        }
+
+        #initScene() {
+          this.#scene = new THREE.Scene();
+        }
+
+        #initMaze() {
+          const maze = new Maze();
+
+          maze.position.set(-10, 10, 0);
+
+          this.#scene.add(maze);
+        }
+
+        #initFloor() {
+          const geometry = new THREE.PlaneGeometry(25, 25);
+          const material = MaterialsLibrary.floor;
+          const floor = new THREE.Mesh(geometry, material);
+
+          floor.receiveShadow = true;
+          floor.position.set(0, 0, -0.5);
+
+          this.#scene.add(floor);
+        }
+
+        #initLight() {
+          const light = new THREE.PointLight(0xffffff, 1, 100);
+
+          light.position.set(0, 0, 0);
+          light.castShadow = true;
+          light.shadow.camera.near = 0.1;
+
+          this.#scene.add(light);
+          this.#savedObjects.light = light;
+        }
+
+        #initObjects() {
+          this.#initMaze();
+          this.#initFloor();
+          this.#initLight();
+        }
+
+        #initCamera() {
+          const fov = 45;
+          const aspect = window.innerWidth / window.innerHeight;
+          const near = 1;
+          const far = 1000;
+
+          this.#camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+          this.#camera.position.set(0, 0, 10);
+        }
+
+        #initRenderer() {
+          const alpha = true;
+          const clearColor = COLOR_SCHEME.background;
+          const clearColorAlpha = 1;
+
+          this.#renderer = new THREE.WebGLRenderer({ alpha });
+          this.#renderer.setClearColor(clearColor, clearColorAlpha);
+          this.#renderer.setPixelRatio(window.devicePixelRatio);
+          this.#renderer.shadowMap.enabled = true;
+          this.#renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+          this.#root.appendChild(this.#renderer.domElement);
+        }
+
+        #initComposer() {
+          const width = window.innerWidth;
+          const height = window.innerHeight;
+
+          this.#composer = new THREE.EffectComposer(this.#renderer);
+          this.#composer.setSize(width, height);
+          this.#initRenderPass();
+          this.#initBloomPass();
+        }
+
+        #initRenderPass() {
+          const renderPass = new THREE.RenderPass(this.#scene, this.#camera);
+
+          this.#composer.addPass(renderPass);
+        }
+
+        #initBloomPass() {
+          const width = window.innerWidth;
+          const height = window.innerHeight;
+          const resolution = new THREE.Vector2(width, height);
+          const strength = 0.29;
+          const radius = 1;
+          const threshold = 0.1;
+          const bloomPass = new THREE.UnrealBloomPass(
+            resolution,
+            strength,
+            radius,
+            threshold
+          );
+
+          bloomPass.renderToScreen = true;
+
+          this.#composer.addPass(bloomPass);
+        }
+
+        #initEventListeners() {
+          window.addEventListener("resize", this.#onWindowResize.bind(this));
+          document.addEventListener("mousemove", this.#onMouseMove.bind(this));
+        }
+
+        #onWindowResize() {
+          const width = window.innerWidth;
+          const height = window.innerHeight;
+
+          this.#camera.aspect = width / height;
+          this.#camera.updateProjectionMatrix();
+          this.#renderer.setSize(width, height);
+          this.#composer.setSize(width, height);
+        }
+
+        #calculateMousePosition3D(e) {
+          const mouseX = e.clientX;
+          const mouseY = e.clientY;
+
+          this.#cursor.style.transform = `translateX(${
+            mouseX - 32
+          }px) translateY(${mouseY - 32}px)`;
+
+          const x = (mouseX / window.innerWidth) * 2 - 1;
+          const y = -(mouseY / window.innerHeight) * 2 + 1;
+          const tmp = new THREE.Vector3();
+
+          tmp.set(x, y, 0.5);
+          tmp.unproject(this.#camera);
+          tmp.sub(this.#camera.position).normalize();
+
+          const targetZ = 0;
+          const distance = (targetZ - this.#camera.position.z) / tmp.z;
+
+          const mousePosition3D = new THREE.Vector3()
+            .copy(this.#camera.position)
+            .add(tmp.multiplyScalar(distance));
+
+          return mousePosition3D;
+        }
+
+        #onMouseMove(e) {
+          const mousePosition3D = this.#calculateMousePosition3D(e);
+
+          this.#savedObjects.light.position.copy(mousePosition3D);
+        }
+
+        #render() {
+          this.#composer.render(this.#scene, this.#camera);
+        }
+
+        #animate() {
+          this.#render();
+          requestAnimationFrame(this.#animate.bind(this));
+        }
+      }
+
+      const root = document.getElementById("root");
+      const app = new App(root);
+    </script>
+  </body>
 </html>
