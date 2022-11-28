@@ -1,0 +1,327 @@
+@function gray($color) {
+  @return rgb($color, $color, $color);
+}
+
+$blue: rgb(225, 245, 254);
+$green: rgb(102, 187, 106);
+
+$active: $blue;
+
+$backgroundImage: "https://images.unsplash.com/photo-1604076913837-52ab5629fba9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80";
+
+body {
+  margin: 0px;
+  padding: 0px;
+
+  input,
+  h1,
+  h2,
+  a,
+  p,
+  button {
+    color: gray(90);
+    font-family: "Rubik", sans-serif;
+    font-weight: 400;
+    margin: 0px;
+    padding: 0px;
+  }
+}
+
+#app {
+  background-color: gray(20);
+  height: 100vh;
+  position: relative;
+  width: 100vw;
+
+  #calendar-background-wrapper {
+    height: 100%;
+    left: 0px;
+    position: fixed;
+    top: 0px;
+    width: 100%;
+
+    #calendar-background {
+      background-image: url($backgroundImage);
+      background-position: center;
+      background-size: cover;
+      height: 100%;
+      left: 50%;
+      min-height: 1200px;
+      min-width: 1200px;
+      opacity: 0.7;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+    }
+  }
+
+  #calendar {
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    width: 100vw;
+
+    #calendar-dates {
+      background-color: rgba(white, 0.15);
+      border: 1px solid rgba(white, 0.15);
+      border-radius: 20px;
+      box-shadow: rgba(17, 12, 46, 0.15) 0px 48px 100px 0px;
+      display: flex;
+      flex-shrink: 0;
+      flex-wrap: wrap;
+      gap: 10px;
+      height: 840px;
+      left: 50%;
+      padding: 20px;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      transition: transform 400ms ease-in-out;
+      width: 1180px;
+
+      .date-wrapper {
+        background-color: transparent;
+        border: none;
+        box-shadow: inset 0px 0px 6px 2px rgba(black, 0.03),
+          inset 0px 0px 10px 8px rgba(black, 0.02);
+        display: flex;
+        flex-direction: column;
+        flex-shrink: 0;
+        gap: 10px;
+        height: 160px;
+        outline: none;
+        overflow: hidden;
+        padding: 10px;
+        transition: transform 250ms;
+        width: 160px;
+
+        &.active-month {
+          &:hover,
+          &:focus {
+            cursor: pointer;
+            transform: translateY(-5px);
+
+            .date {
+              background-color: rgba(white, 0.15);
+              border-color: rgba(white, 0.25);
+            }
+          }
+        }
+
+        &:not(.active-month) {
+          opacity: 0.6;
+        }
+
+        .date {
+          background-color: rgba(white, 0.1);
+          border: 1px solid rgba(white, 0.1);
+          box-shadow: 0px 48px 100px 0px rgba(17, 12, 46, 0.02);
+          flex-grow: 1;
+          justify-content: space-between;
+          position: relative;
+          text-align: left;
+          transition: background-color 250ms;
+          width: calc(100% - 2px);
+
+          .date-day {
+            border-radius: 100px;
+            border: 1px solid rgba(white, 0.1);
+            box-shadow: inset 0px 0px 8px 4px rgba(black, 0.04),
+              inset 0px 0px 6px 4px rgba(black, 0.02);
+            display: inline-flex;
+
+            h2 {
+              text-align: center;
+            }
+
+            .date-day-of-month {
+              color: white;
+            }
+
+            .date-day-of-week {
+              color: gray(40);
+              font-weight: 700;
+              text-transform: uppercase;
+            }
+          }
+
+          .date-title {
+            align-items: start;
+            display: flex;
+
+            .date-title-dot {
+              background-color: white;
+              flex-shrink: 0;
+            }
+
+            h2 {
+              color: white;
+              word-break: break-word;
+            }
+          }
+        }
+
+        .active-day-indicator {
+          background-color: $active;
+          border-radius: 5px;
+          height: 5px;
+          margin: 0px 20px;
+          width: calc(100% - 40px);
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1400px) {
+  #app {
+    #calendar {
+      #calendar-dates {
+        border-radius: 16px;
+        gap: 8px;
+        height: 632px;
+        padding: 16px;
+        width: 888px;
+
+        .date-wrapper {
+          border-radius: 16px;
+          gap: 8px;
+          height: 120px;
+          padding: 8px;
+          width: 120px;
+
+          &.active-month {
+            &:hover,
+            &:focus {
+              cursor: pointer;
+              transform: translateY(-3px);
+            }
+          }
+
+          .date {
+            border-radius: 12px;
+
+            .date-day {
+              display: inline-flex;
+              gap: 3px;
+              margin: 8px;
+              padding: 3px 9px;
+
+              .date-day-of-month {
+                font-size: 1em;
+              }
+
+              .date-day-of-week {
+                font-size: 0.7em;
+                margin-top: 0px;
+              }
+            }
+
+            .date-title {
+              gap: 8px;
+              padding: 8px;
+              padding-top: 4px;
+
+              .date-title-dot {
+                border-radius: 4px;
+                height: 4px;
+                margin-top: 4px;
+                width: 4px;
+              }
+
+              h2 {
+                font-size: 0.9em;
+              }
+            }
+          }
+
+          .active-day-indicator {
+            margin: 0px 10px;
+            width: calc(100% - 20px);
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1000px) {
+  #app {
+    #calendar {
+      overflow: auto;
+
+      &::-webkit-scrollbar {
+        width: 0px;
+      }
+
+      #calendar-dates {
+        height: auto;
+        left: 0px;
+        margin: 10px auto;
+        padding: 16px;
+        position: relative;
+        top: 0px;
+        transform: none;
+        transition: none;
+        width: calc(100% - 54px);
+
+        .date-wrapper {
+          width: 100%;
+
+          .active-day-indicator {
+            margin: 0px 40px;
+            width: calc(100% - 80px);
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 1000px), (min-width: 1401px) {
+  #app {
+    #calendar {
+      #calendar-dates {
+        .date-wrapper {
+          border-radius: 26px;
+
+          .date {
+            border-radius: 20px;
+
+            .date-day {
+              gap: 5px;
+              margin: 10px;
+              padding: 4px 12px;
+
+              .date-day-of-month {
+                font-size: 1.1em;
+              }
+
+              .date-day-of-week {
+                font-size: 0.8em;
+                margin-top: 2px;
+              }
+            }
+
+            .date-title {
+              gap: 8px;
+              padding: 10px;
+
+              .date-title-dot {
+                border-radius: 5px;
+                height: 5px;
+                margin-top: 5px;
+                width: 5px;
+              }
+
+              h2 {
+                font-size: 1em;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
