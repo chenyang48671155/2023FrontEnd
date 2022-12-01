@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
+    <title>spinning at the bow</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: black;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      //wccchallenge
+      //click to pause, mouse position changes speed and rotation
+      //mobile version is here:https://openprocessing.org/sketch/1753842
+      let starA = [];
+      let delta = 1;
+      let r = 10;
+      let maxStars = 200;
+      let playBool = true;
+      let portH;
+      let df, rf;
+      function setup() {
+        createCanvas(windowWidth, windowHeight);
+        noStroke();
+        background(10);
+        portH = max(width, height) * 1.1;
+        for (let i = 0; i < maxStars; i++) {
+          starA.push(new Star(random(-portH, portH), random(-portH, portH)));
+        }
+      }
+      function draw() {
+        t = frameCount / 1000;
+        translate(width / 2, height / 2);
+        rf = map(mouseX, 0, width, -PI, PI);
+        rotate(t * rf);
+        df = map(mouseY, 0, height, 0, 1);
+        delta = df;
+        if (!playBool) {
+          background(10, 10, 10, 50);
+          df = 0;
+        } else {
+          background(10, 10, 10, 5 + (100 - 100 * df));
+        }
+        for (let i = 0; i < starA.length; i++) {
+          if (playBool) {
+            starA[i].move();
+          }
+          starA[i].display();
+          if (dist(starA[i].x, starA[i].y, 0, 0) >= portH) {
+            starA.splice(i, 1);
+          } else {
+            starA[i].display();
+          }
+        }
+        while (starA.length < maxStars) {
+          starA.push(
+            new Star(r * randomGaussian(1, 3), r * randomGaussian(1, 3))
+          );
+        }
+      }
+
+      class Star {
+        constructor(x, y) {
+          this.x = x;
+          this.y = y;
+          this.m = this.y / this.x;
+          this.c = color(random(200, 255), random(200, 255), random(200, 255));
+          this.r1 = random(200, 240);
+          this.g1 = random(200, 255);
+          this.b1 = random(200, 255);
+          this.s = random(0.5, 3);
+          let b = random(0, 1);
+          this.nA = [];
+          if (b > 0.993) {
+            this.nebulaBool = true;
+            for (let i = 0; i < 800; i++) {
+              this.nA[i] = createVector(
+                randomGaussian((-10 * this.s) / 2, (10 * this.s) / 2),
+                randomGaussian((-30 * this.s) / 2, (30 * this.s) / 2)
+              );
+            }
+          } else {
+            this.nebulaBool = false;
+          }
+        }
+        display() {
+          fill(this.c);
+          let dis = dist(this.x, this.y, 0, 0);
+          if (playBool) {
+            circle(this.x, this.y, (this.s * dist(this.x, this.y, 0, 0)) / 300);
+          } else {
+            circle(
+              this.x,
+              this.y,
+              max(0.2, (this.s * dist(this.x, this.y, 0, 0)) / 300)
+            );
+          }
+          if (this.nebulaBool) {
+            push();
+            rotate(this.m);
+            for (let i = 0; i < this.nA.length; i++) {
+              let tmpd = abs(dist(this.x, this.y, this.nA[i].x, this.nA[i].y));
+              if (playBool) {
+                fill(
+                  this.r1 - 20 / tmpd,
+                  this.g1 - 20 / tmpd,
+                  this.b1 - 20 / tmpd,
+                  1
+                );
+              } else {
+                fill(
+                  this.r1 - 20 / tmpd,
+                  this.g1 - 20 / tmpd,
+                  this.b1 - 20 / tmpd,
+                  2
+                );
+              }
+
+              circle(
+                this.x + (this.nA[i].x * dist(this.x, this.y, 0, 0)) / 300,
+                this.y + (this.nA[i].y * dist(this.x, this.y, 0, 0)) / 300,
+                min(
+                  5 + abs(tmpd),
+                  (abs(this.nA[i].y / 5) * abs(dist(this.x, this.y, 0, 0))) /
+                    300
+                )
+              );
+            }
+            pop();
+          }
+        }
+        move() {
+          if (this.x >= 0) {
+            let a = sqrt(this.x * this.x + this.y * this.y);
+            let x1 = this.x;
+            let y1 = this.y;
+            this.x = (delta * x1) / a + x1;
+            this.y = (delta * y1) / a + y1;
+          } else {
+            let a = sqrt(this.x * this.x + this.y * this.y);
+            let x1 = this.x;
+            let y1 = this.y;
+            this.x = (delta * x1) / a + x1;
+            this.y = (delta * y1) / a + y1;
+          }
+        }
+      }
+
+      function mousePressed() {
+        background(0, 0, 0, 150);
+        playBool = !playBool;
+      }
+    </script>
+  </body>
+</html>
