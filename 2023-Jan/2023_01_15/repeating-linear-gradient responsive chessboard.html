@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>repeating-linear-gradient responsive chessboard</title>
+    <style>
+      body {
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        perspective: 500px;
+        margin: 0;
+        background: #0e1d50;
+      }
+      .checkerboard {
+        transform-style: preserve3d;
+        width: 72vmin;
+        height: 72vmin;
+        margin: 0 auto;
+        background-image: repeating-linear-gradient(
+            #000 0,
+            #000 9vmin,
+            #fff 9vmin,
+            #fff 18vmin
+          ),
+          repeating-linear-gradient(
+            90deg,
+            #000 0,
+            #000 9vmin,
+            #fff 9vmin,
+            #fff 18vmin
+          );
+        background-blend-mode: exclusion;
+        border: 3vmin solid black;
+        outline: 0.35vmin solid #444;
+        outline-offset: -3vmin;
+        box-shadow: 0 0 10vmin -3vmin #0ac;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="checkerboard"></div>
+  </body>
+</html>
