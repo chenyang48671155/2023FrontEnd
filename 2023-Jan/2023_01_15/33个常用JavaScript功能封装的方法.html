@@ -326,16 +326,36 @@
          document.execCommand('copy')
          typeof fn === 'function' && fn()
          console.log('复制成功')
-        }12、判断是否是一个数组const isArray = function(arr) { // 判断是否是一个数组
+        }
+
+
+
+
+
+
+
+        // 12、判断是否是一个数组
+        const isArray = function(arr) { // 判断是否是一个数组
          return Object.prototype.toString.call(arr) === '[object Array]'
-        }13、判断两个数组是否相等const arrayEqual = function(arr1, arr2) { //判断两个数组是否相等
+        }
+
+
+
+
+        // 13、判断两个数组是否相等
+        const arrayEqual = function(arr1, arr2) { //判断两个数组是否相等
          if (arr1 === arr2) return true;
          if (arr1.length != arr2.length) return false;
          for (let i = 0; i < arr1.length; ++i) {
            if (arr1[i] !== arr2[i]) return false;
         }
          return true;
-        }14、时间与时间戳转换const stamp = { // 时间，时间戳转换
+        }
+
+
+
+        // 14、时间与时间戳转换
+        const stamp = { // 时间，时间戳转换
          getTime: function(time) { // 时间转10位时间戳
            let date = time ? new Date(time) : new Date()
            return Math.round(date.getTime() / 1000)
@@ -343,7 +363,16 @@
          timeToStr: function(time, fmt) { // 10位时间戳转时间
            return new Date(time * 1000).pattern(fmt || 'yyyy-MM-dd')
         }
-        }15、常用正则验证const checkStr = function(str, type) { // 常用正则验证，注意type大小写
+        }
+
+
+
+
+
+
+
+        // 15、常用正则验证
+        const checkStr = function(str, type) { // 常用正则验证，注意type大小写
          switch (type) {
            case 'phone': // 手机号码
              return /^1[3|4|5|6|7|8|9][0-9]{9}$/.test(str)
@@ -383,7 +412,19 @@
            default:
              return true
         }
-        }16、是否为PC端const isPC = function() { // 是否为PC端
+        }
+
+
+
+
+
+
+
+
+
+
+        // 16、是否为PC端
+        const isPC = function() { // 是否为PC端
          let userAgentInfo = navigator.userAgent
          let Agents = ['Android', 'iPhone', 'SymbianOS', 'Windows Phone', 'iPad', 'iPod']
          let flag = true
@@ -394,7 +435,16 @@
           }
         }
          return flag
-        }17、去除字符串空格const trim = function(str, type) { // 去除空格， type: 1-所有空格 2-前后空格 3-前空格 4-后空格
+
+        }
+
+
+
+
+
+
+        // 17、去除字符串空格
+        const trim = function(str, type) { // 去除空格， type: 1-所有空格 2-前后空格 3-前空格 4-后空格
          type = type || 1
          switch (type) {
            case 1:
@@ -408,7 +458,13 @@
            default:
              return str
         }
-        }18、字符串大小写转换const changeCase = function(str, type) { // 字符串大小写转换 type: 1:首字母大写 2：首页母小写 3：大小写转换 4：全部大写 5：全部小写
+        }
+
+
+
+
+        18、字符串大小写转换
+        onst changeCase = function(str, type) { // 字符串大小写转换 type: 1:首字母大写 2：首页母小写 3：大小写转换 4：全部大写 5：全部小写
          type = type || 4
          switch (type) {
            case 1:
@@ -434,19 +490,34 @@
            default:
              return str
         }
-        }19、过滤html代码const filterTag = function(str) { // 过滤html代码(把<>转换)
+        }
+
+
+
+        // 19、过滤html代码
+        const filterTag = function(str) { // 过滤html代码(把<>转换)
          str = str.replace(/&/ig, '&')
          str = str.replace(/</ig, '<')
          str = str.replace(/>/ig, '>')
          str = str.replace(' ', ' ')
          return str
-        }20、生成随机数范围const random = function(min, max) { // 生成随机数范围
+        }
+
+
+
+
+        // 20、生成随机数范围
+        const random = function(min, max) { // 生成随机数范围
          if (arguments.length === 2) {
            return Math.floor(min + Math.random() * ((max + 1) - min))
         } else {
            return null
         }
-        }21、阿拉伯数字转中文大写数字const numberToChinese = function(num) { // 将阿拉伯数字翻译成中文的大写数字
+        }
+
+
+        // 21、阿拉伯数字转中文大写数字
+        const numberToChinese = function(num) { // 将阿拉伯数字翻译成中文的大写数字
          let AA = new Array('零', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十')
          let BB = new Array('', '十', '百', '仟', '萬', '億', '点', '')
          let a = ('' + num).replace(/(^0*)/g, '').split('.')
@@ -489,7 +560,14 @@
            re = re.replace('一', '')
         }
          return re
-        }22、原生dom操作const dom = {
+        }
+
+
+
+
+
+        // 22、原生dom操作
+        const dom = {
          $: function(selector) {
            let type = selector.substring(0, 1)
            if (type === '#') {
@@ -546,7 +624,12 @@
            div.innerHTML = htmlString
            return div.children[0]
         }
-        }23、判断图片加载完成const imgLoadAll = function(arr, callback) { // 图片加载
+        }
+
+
+
+        // 23、判断图片加载完成
+        const imgLoadAll = function(arr, callback) { // 图片加载
          let arrImg = []
          for (let i = 0; i < arr.length; i++) {
            let img = new Image()
@@ -558,11 +641,29 @@
             }
           }
         }
-        }24、音频加载完成操作const loadAudio = function(src, callback) { // 音频加载
+        }
+
+
+
+
+
+
+
+
+
+        // 24、音频加载完成操作
+        const loadAudio = function(src, callback) { // 音频加载
          var audio = new Audio(src)
          audio.onloadedmetadata = callback
          audio.src = src
-        }25、光标所在位置插入字符const insertAtCursor = function(dom, val) { // 光标所在位置插入字符
+        }
+
+
+
+
+
+        // 25、光标所在位置插入字符
+        const insertAtCursor = function(dom, val) { // 光标所在位置插入字符
          if (document.selection) {
            dom.focus()
            let sel = document.selection.createRange()
@@ -583,7 +684,12 @@
            dom.value += val
            dom.focus()
         }
-        }26、图片地址转base64const getBase64 = function(img) { //传入图片路径，返回base64，使用getBase64(url).then(function(base64){},function(err){});
+        }
+
+
+
+        // 26、图片地址转base64
+        const getBase64 = function(img) { //传入图片路径，返回base64，使用getBase64(url).then(function(base64){},function(err){});
          let getBase64Image = function(img, width, height) { //width、height调用时传入具体像素值，控制大小,不传则默认图像大小
            let canvas = document.createElement("canvas");
            canvas.width = width ? width : img.width;
@@ -603,7 +709,15 @@
           }
            return deferred.promise();
         }
-        }27、base64图片下载功能const downloadFile = function(base64, fileName) { //base64图片下载功能
+        }
+
+
+
+
+
+
+        // 27、base64图片下载功能
+        const downloadFile = function(base64, fileName) { //base64图片下载功能
          let base64ToBlob = function(code) {
            let parts = code.split(';base64,');
            let contentType = parts[0].split(':')[1];
@@ -624,9 +738,22 @@
          aLink.download = fileName;
          aLink.href = URL.createObjectURL(blob);
          aLink.click();
-        }28、浏览器是否支持webP格式图片const isSupportWebP = function() { //判断浏览器是否支持webP格式图片
+        }
+
+
+
+
+        // 28、浏览器是否支持webP格式图片
+        const isSupportWebP = function() { //判断浏览器是否支持webP格式图片
          return !![].map && document.createElement('canvas').toDataURL('image/webp').indexOf('data:image/webp') == 0;
-        }29、url参数转对象const parseQueryString = function(url) { //url参数转对象
+        }
+
+
+
+
+
+        // 29、url参数转对象
+        const parseQueryString = function(url) { //url参数转对象
          url = !url ? window.location.href : url;
          if (url.indexOf('?') === -1) {
            return {};
@@ -642,7 +769,14 @@
            query[decodeURIComponent(pair[0])] = decodeURIComponent(pair[1] || '');
         }
          return query;
-        }30、对象序列化【对象转url参数】const stringfyQueryString = function(obj) { //对象序列化【对象转url参数】
+        }
+
+
+
+
+
+        // 30、对象序列化【对象转url参数】
+        const stringfyQueryString = function(obj) { //对象序列化【对象转url参数】
          if (!obj) return '';
          let pairs = [];
          for (let key in obj) {
@@ -656,7 +790,13 @@
            pairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]));
         }
          return pairs.join('&');
-        }31、H5软键盘缩回、弹起回调const h5Resize = function(downCb, upCb) { //当软件键盘弹起会改变当前 window.innerHeight，监听这个值变化 [downCb 当软键盘弹起后，缩回的回调,upCb 当软键盘弹起的回调]
+        }
+
+
+
+
+        // 31、H5软键盘缩回、弹起回调
+        const h5Resize = function(downCb, upCb) { //当软件键盘弹起会改变当前 window.innerHeight，监听这个值变化 [downCb 当软键盘弹起后，缩回的回调,upCb 当软键盘弹起的回调]
          var clientHeight = window.innerHeight;
          downCb = typeof downCb === 'function' ? downCb : function() {}
          upCb = typeof upCb === 'function' ? upCb : function() {}
@@ -669,7 +809,13 @@
              upCb();
           }
         });
-        }32、函数防抖const debounce = function(func, wait, immediate) { //函数防抖[func 函数,wait 延迟执行毫秒数,immediate true 表立即执行,false 表非立即执行,立即执行是触发事件后函数会立即执行，然后n秒内不触发事件才能继续执行函数的效果]
+        }
+
+
+
+
+        // 32、函数防抖
+        const debounce = function(func, wait, immediate) { //函数防抖[func 函数,wait 延迟执行毫秒数,immediate true 表立即执行,false 表非立即执行,立即执行是触发事件后函数会立即执行，然后n秒内不触发事件才能继续执行函数的效果]
          let timeout;
          return function() {
            let context = this;
@@ -687,7 +833,12 @@
             }, wait);
           }
         }
-        }33、函数节流const throttle = function(func, wait ,type) { //函数节流 [func 函数 wait 延迟执行毫秒数 type 1 表时间戳版，2 表定时器版]
+        }
+
+
+
+        // 33、函数节流
+        const throttle = function(func, wait ,type) { //函数节流 [func 函数 wait 延迟执行毫秒数 type 1 表时间戳版，2 表定时器版]
            if(type===1){
                let previous = 0;
           }else if(type===2){
